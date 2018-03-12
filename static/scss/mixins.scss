@@ -1,0 +1,7 @@
+@mixin itemBorderSmall($color) {
+  box-shadow: 1px 1px $color, 2px 2px $color, 3px 3px $color, 4px 4px $color, 5px 5px $color;
+}
+
+@mixin itemBorderBig($color) {
+  box-shadow: 1px 1px $color, 2px 2px $color, 3px 3px $color, 4px 4px $color, 5px 5px $color, 6px 6px $color, 7px 7px $color, 8px 8px $color;
+}
