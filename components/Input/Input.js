@@ -93,6 +93,7 @@ export default class Input extends PureComponent {
             }
           }
 
+
           @keyframes dash {
             to {
               stroke-dashoffset: 1000;

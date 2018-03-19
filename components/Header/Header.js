@@ -24,13 +24,21 @@ export default class Button extends PureComponent {
 
     return (
       <header className={`header standard-title ${animate} air-4`}>
-        <h1 className="header-title">{text}</h1>
-        <img className="header-crown" src="./static/images/crown.png" alt="crown" />
+        <h1 className="header-title">
+          <div className="header-crown-wrapper">
+            <span className="header-crown-letter">K<img className="header-crown" src="./static/images/crown.png" alt="crown" /></span>
+            ing
+          </div>
+          <span className="header-title-text"> of the hill</span>
+        </h1>
+
         <style jsx>{`
 
           @import './static/scss/variables';
 
           .header {
+            font-size: 32px;
+            text-transform: uppercase;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -44,12 +52,18 @@ export default class Button extends PureComponent {
               padding-top: #{$gutter * 4};
             }
             &-crown {
-              height: 40px;
+              height: 50px;
               position: absolute;
-              top: 25px;
-              left: 16px;
+              top: -30px;
+              left: -20px;
               transition: all 500ms ease-out;
               transform: translate3d(0, -50px, 0) rotate(-20deg);
+              &-letter {
+                position: relative;
+              }
+              &-wrapper {
+                margin-bottom: $gutter;
+              }
             }
           }
         `}</style>

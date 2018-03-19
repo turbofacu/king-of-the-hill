@@ -103,6 +103,10 @@ export default class Button extends PureComponent {
               background-color: $orange;
               @include itemBorderBig(darken($orange, 8%));
             }
+            &.crimson {
+              background-color: lighten($crimson, 15%);
+              @include itemBorderBig($crimson);
+            }
           }
 
         `}</style>

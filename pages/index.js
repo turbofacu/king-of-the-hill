@@ -54,6 +54,11 @@ export default class extends Component {
     })
   }
 
+  backToMatchView = () => {
+    this.setState({ showPlayersView: false, showMatchView: true, showStatsView: false })
+  }
+
+
   changeToStatsView = () => {
     const { currentPlayers, waitingPlayers } = this.state
     const players = currentPlayers.concat(waitingPlayers)
@@ -266,7 +271,7 @@ export default class extends Component {
         </Head>
         <SVGSprites />
         <div className="container">
-          <Header text="KING OF THE HILL" />
+          <Header />
           {showPlayersView &&
             <AddPlayersView
               changeView={this.changeToMatchView}
@@ -289,6 +294,7 @@ export default class extends Component {
             <StatsView
               players={players}
               matches={matches}
+              changeView={this.backToMatchView}
             />
           }
         </div>
@@ -314,11 +320,17 @@ export default class extends Component {
           }
 
           .container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             max-width: 600px;
             margin: 0 auto;
           }
 
           .standard-flex {
+            width: 100%;
             display: flex;
             flex-direction: column;
             align-content: center;
@@ -328,20 +340,10 @@ export default class extends Component {
             text-align: center;
           }
 
-          .air-1 {
-            margin-bottom: 16px;
-          }
-
-          .air-2 {
-            margin-bottom: 24px;
-          }
-
-          .air-3 {
-            margin-bottom: 32px;
-          }
-
-          .air-4 {
-            margin-bottom: 48px;
+          @for $i from 1 to 10 {
+            .air-#{$i} {
+              margin-bottom: #{ $i * $gutter};
+            }
           }
 
           .standard-title {
@@ -368,91 +370,64 @@ export default class extends Component {
             }
           }
 
+          $player-colors : (
+            0: (
+              color: $cyan,
+              percentage: 25%,
+            ),
+            1: (
+              color: $lila,
+              percentage: 20%,
+            ),
+            2: (
+              color: $crimson,
+              percentage: 15%,
+            ),
+            3: (
+              color: $yellow,
+              percentage: 25%,
+            ),
+            4: (
+              color: $pink,
+              percentage: 15%,
+            ),
+            5: (
+              color: $magenta,
+              percentage: 15%,
+            ),
+            6: (
+              color: $lime,
+              percentage: 15%,
+            ),
+            7: (
+              color: $orange,
+              percentage: 15%,
+            ),
+            8: (
+              color: $aquamarine,
+              percentage: 15%,
+            ),
+            9: (
+              color: $green,
+              percentage: 15%,
+            ),
+          );
+
           .item-with-color {
             &.big {
-              &.color-0 {
-                background-color: lighten($cyan, 15%);
-                @include itemBorderBig($cyan);
-              }
-              &.color-1 {
-                background-color: lighten(blue, 35%);
-                @include itemBorderBig(lighten(blue, 20%));
-              }
-              &.color-2 {
-                background-color: lighten($crimson, 15%);
-                @include itemBorderBig($crimson);
-              }
-              &.color-3 {
-                background-color: lighten($yellow, 15%);
-                background-color: $yellow;
-                @include itemBorderBig($yellow);
-              }
-              &.color-4 {
-                background-color: lighten($crimson, 35%);
-                @include itemBorderBig(lighten($crimson, 20%));
-              }
-              &.color-5 {
-                background-color: lighten($magenta, 45%);
-                @include itemBorderBig(lighten($magenta, 30%));
-              }
-              &.color-6 {
-                background-color: lighten($green, 25%);
-                @include itemBorderBig(lighten($green, 10%));
-              }
-              &.color-7 {
-                background-color: lighten($orange, 15%);
-                @include itemBorderBig($orange);
-              }
-              &.color-8 {
-                background-color: lighten(darken($cyan, 30%), 15%);
-                @include itemBorderBig(darken($cyan, 30%));
-              }
-              &.color-9 {
-                background-color: darken($yellow, 40%);
-                @include itemBorderBig(darken($yellow, 25%));
+              @each $player, $style in $player-colors {
+                &.color-#{$player} {
+                  background-color: map-get($style, color);
+                  @include itemBorderBig(darken(map-get($style, color), map-get($style, percentage)));
+                }
               }
             }
             &.small {
-              &.color-0 {
-                background-color: lighten($cyan, 15%);
-                @include itemBorderSmall($cyan);
-              }
-              &.color-1 {
-                background-color: lighten(blue, 35%);
-                @include itemBorderSmall(lighten(blue, 20%));
-              }
-              &.color-2 {
-                background-color: lighten($crimson, 15%);
-                @include itemBorderSmall($crimson);
-              }
-              &.color-3 {
-                background-color: lighten($yellow, 15%);
-                background-color: $yellow;
-                @include itemBorderSmall($yellow);
-              }
-              &.color-4 {
-                background-color: lighten($crimson, 35%);
-                @include itemBorderSmall(lighten($crimson, 20%));
-              }
-              &.color-5 {
-                background-color: lighten($magenta, 45%);
-                @include itemBorderSmall(lighten($magenta, 30%));
-              }
-              &.color-6 {
-                background-color: lighten($green, 25%);
-                @include itemBorderSmall(lighten($green, 10%));
-              }
-              &.color-7 {
-                background-color: lighten($orange, 15%);
-                @include itemBorderSmall($orange);
-              }
-              &.color-8 {
-                background-color: lighten(darken($cyan, 30%), 15%);
-                @include itemBorderSmall(darken($cyan, 30%));
-              }
-              &.color-9 {
-                background-color: darken($yellow, 40%);
-                @include itemBorderSmall(darken($yellow, 25%));
+              @each $player, $style in $player-colors {
+                &.color-#{$player} {
+                  background-color: map-get($style, color);
+                  @include itemBorderSmall(darken(map-get($style, color), map-get($style, percentage)));
+                }
               }
             }
             &.no-background {
