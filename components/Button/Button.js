@@ -35,13 +35,18 @@ export default class Button extends PureComponent {
   }
 
   handleClick = () => {
-    if (this.props.addPlayer) {
-      const { inputValue } = this.props
-      this.props.addPlayer(inputValue)
-      this.props.focusInput()
+    const {
+      changeView,
+      addPlayer,
+      focusInput,
+      inputValue,
+    } = this.props
+    if (addPlayer) {
+      addPlayer(inputValue)
+      focusInput()
     }
-    if (this.props.changeView) {
-      this.props.changeView()
+    if (changeView) {
+      changeView()
     }
   }
 

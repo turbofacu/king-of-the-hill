@@ -45,25 +45,47 @@ export default class Button extends PureComponent {
             position: relative;
             &.animate {
               .header-crown {
-                transform: translate3d(0, 0, 0) rotate(-20deg);
+                animation: crown 350ms cubic-bezier(0, 0, 0.53, 1.38) 1 forwards;
+                transform-origin: right bottom;
               }
             }
             &-title {
+              font-size: 68px;
               padding-top: #{$gutter * 4};
+              @media(max-width: 768px) {
+                font-size: 40px;
+              }
             }
             &-crown {
               height: 50px;
               position: absolute;
-              top: -30px;
-              left: -20px;
+              top: -35px;
+              left: -15px;
               transition: all 500ms ease-out;
-              transform: translate3d(0, -50px, 0) rotate(-20deg);
+              transform: translate3d(0, -50px, 0);
+              @media(max-width: 768px) {
+                height: 32px;
+                top: -25px;
+                left: -10px;
+              }
               &-letter {
                 position: relative;
               }
               &-wrapper {
                 margin-bottom: $gutter;
               }
+            }
+          }
+
+          @keyframes crown {
+            0% {
+              transform: translate3d(0, -50px, 0) rotate(0deg);
+            }
+            80% {
+              transform: translate3d(0, 0, 0) rotate(0deg);
+            }
+            100% {
+              transform: translate3d(0, 0, 0) rotate(-15deg);
             }
           }
         `}</style>

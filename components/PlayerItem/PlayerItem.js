@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
+import cn from 'classnames'
+
 export default class PlayerItem extends Component {
   static propTypes = {
     removePlayer: PropTypes.func,
@@ -24,7 +26,7 @@ export default class PlayerItem extends Component {
   }
 
   state = {
-    openStats: '',
+    openStats: false,
   }
 
   erasePlayer = () => {
@@ -33,7 +35,7 @@ export default class PlayerItem extends Component {
   }
 
   openStats = () => {
-    this.setState({ openStats: 'stats-open' })
+    this.setState({ openStats: !this.state.openStats })
   }
 
   render() {
@@ -51,74 +53,76 @@ export default class PlayerItem extends Component {
     } = this.props
 
     return (
-      <li className={`player-item item-with-color small gate-${gate} color-${id.substring(0, 1)} ${className} ${openStats}`}>
-        <div className="player-item-flex">
-          <span className="player-item-name">
-            {className === 'stats-item' &&
-              <span>{number}. </span>
+      <li className={`player-item item-with-color small gate-${gate} color-${id.substring(0, 1)} ${className}`}>
+        <div className={cn({ 'stats-open': openStats })}>
+          <div className="player-item-flex">
+            <span className="player-item-name">
+              {className === 'stats-item' &&
+                <span>{number}. </span>
+              }
+              <span>{name}</span>
+            </span>
+            {removePlayer &&
+              <span className="player-item-cross" onClick={this.erasePlayer} role="button" tabIndex={0}>x</span>
             }
-            <span>{name}</span>
-          </span>
-          {removePlayer &&
-            <span className="player-item-cross" onClick={this.erasePlayer} role="button" tabIndex={0}>x</span>
-          }
-          <div className="player-item-status">
-            {stats.totalGames > 0 &&
-              <ul className="player-item-stats-list">
-                <li className="player-item-stats-item">P{stats.totalGames} </li>
-                <li className="player-item-stats-item">W{stats.wins} </li>
-                <li className="player-item-stats-item">L{stats.lost}</li>
-              </ul>
-            }
-            {gate &&
-              <img className="player-item-gate" src="./static/images/skull-white.png" alt="skull" />
-            }
-            {className === 'stats-item' &&
-              <div onClick={this.openStats} role="button" tabIndex={0}>
-                <img className="player-item-arrow" src="./static/images/arrow.png" alt="arrow" />
-              </div>
-            }
+            <div className="player-item-status">
+              {stats.totalGames > 0 && !openStats &&
+                <ul className="player-item-stats-list">
+                  <li className="player-item-stats-item">P{stats.totalGames} </li>
+                  <li className="player-item-stats-item">W{stats.wins} </li>
+                  <li className="player-item-stats-item">L{stats.lost}</li>
+                </ul>
+              }
+              {gate &&
+                <img className="player-item-gate" src="./static/images/skull-white.png" alt="skull" />
+              }
+              {className === 'stats-item' &&
+                <div className="player-item-arrow" onClick={this.openStats} role="button" tabIndex={0}>
+                  <img src="./static/images/arrow.png" alt="arrow" />
+                </div>
+              }
+            </div>
           </div>
-        </div>
 
-        {className === 'stats-item' &&
-          <div className="player-stats-big">
-            <div>
-              <p className="player-stats-big-title air-1">Stats</p>
-              <ul className="player-stats-big-list air-2">
-                <li className="player-item-big-item air-1">Played: {stats.totalGames} </li>
-                <li className="player-stats-big-item air-1">Crowns: {stats.totalCrowns}</li>
-                <li className="player-stats-big-item air-1">Won: {stats.wins} </li>
-                <li className="player-stats-big-item air-1">Lost: {stats.lost}</li>
-                <li className="player-stats-big-item air-1">Streak: {stats.bestStreak}</li>
-                <li className="player-stats-big-item air-1">Gate: {stats.timesGate}</li>
-              </ul>
-            </div>
-            <div>
-              <p className="player-stats-big-title air-1">Matches</p>
-              <ul className="player-stats-big-matches">
-                {matches.map((e) => {
-                  if (e.matchId.substring(0, 5) === id || e.matchId.substring(6, 11) === id) {
-                    let winnerClass = 'winner-standard'
-                    if (e.matchId.substring(6, 11) === id) {
-                      winnerClass = 'winner-reverse'
+          {className === 'stats-item' && openStats &&
+            <div className="player-stats-big">
+              <div>
+                <p className="player-stats-big-title air-1">Stats</p>
+                <ul className="player-stats-big-list air-2">
+                  <li className="player-item-big-item air-1">Played: {stats.totalGames} </li>
+                  <li className="player-stats-big-item air-1">Crowns: {stats.totalCrowns}</li>
+                  <li className="player-stats-big-item air-1">Won: {stats.wins} </li>
+                  <li className="player-stats-big-item air-1">Lost: {stats.lost}</li>
+                  <li className="player-stats-big-item air-1">Streak: {stats.bestStreak}</li>
+                  <li className="player-stats-big-item air-1">Gate: {stats.timesGate}</li>
+                </ul>
+              </div>
+              <div>
+                <p className="player-stats-big-title air-1">Matches</p>
+                <ul className="player-stats-big-matches">
+                  {matches.map((e) => {
+                    if (e.matchId.substring(0, 5) === id || e.matchId.substring(6, 11) === id) {
+                      let winnerClass = 'winner-standard'
+                      if (e.matchId.substring(6, 11) === id) {
+                        winnerClass = 'winner-reverse'
+                      }
+                      return (
+                        <li className={`player-stats-big-match ${winnerClass} air-1`}>
+                          {e.players.map(el => (
+                            <div className="player-stats-big-player">
+                              <span>{ el.name }</span><span>{ el.wins }</span>
+                            </div>
+                          ))}
+                        </li>
+                      )
                     }
-                    return (
-                      <li className={`player-stats-big-match ${winnerClass} air-1`}>
-                        {e.players.map(el => (
-                          <div className="player-stats-big-player">
-                            <span>{ el.name }</span><span>{ el.wins }</span>
-                          </div>
-                        ))}
-                      </li>
-                    )
-                  }
-                  return false
-                })}
-              </ul>
+                    return false
+                  })}
+                </ul>
+              </div>
             </div>
-          </div>
-        }
+          }
+        </div>
 
         <style jsx>{`
 
@@ -222,13 +226,16 @@ export default class PlayerItem extends Component {
                 display: none;
               }
             }
-            &.stats-open {
+            .stats-open {
               .player-item {
                 &-name {
                   font-size: #{$gutter * 3};
                 }
-                &-arrow, &-status {
+                &-stats-list {
                   display: none;
+                }
+                &-arrow {
+                  transform: rotate(180deg);
                 }
               }
               .player-stats-big {
@@ -258,11 +265,15 @@ export default class PlayerItem extends Component {
               margin-left: 8px;
             }
             &-arrow {
-              width: 22px;
-              height: 22px;
               margin-left: $gutter;
+              display: flex;
+              align-items: center;
               &:focus {
                 outline: none;
+              }
+              > img {
+                width: 22px;
+                height: 22px;
               }
             }
             &-cross {
@@ -276,6 +287,9 @@ export default class PlayerItem extends Component {
               opacity: 0;
               cursor: pointer;
               transition: transform 50ms linear;
+              @media(max-width: 768px) {
+                opacity: 1;
+              }
               &:hover {
                 transform: rotate(180deg) translateZ(0);
               }

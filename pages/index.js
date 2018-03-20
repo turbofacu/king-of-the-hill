@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import Head from 'next/head'
 
+import { getPlayerIndex, getMatchIndex } from '../lib/functions'
+
 import SVGSprites from '../components/SVGSprites/SVGSprites'
 import Header from '../components/Header/Header'
 import AddPlayersView from '../components/AddPlayersView/AddPlayersView'
@@ -22,26 +24,6 @@ export default class extends Component {
     inputValue: '',
   }
 
-  getPlayerIndex = (array, id) => {
-    let playerIndex
-    array.forEach((e, index) => {
-      if (e.id === id) {
-        playerIndex = index
-      }
-    })
-    return playerIndex
-  }
-
-  getMatchIndex = (array, wId, lId) => {
-    let matchIndex
-    array.forEach((e, index) => {
-      if (e.matchId === wId || e.matchId === lId) {
-        matchIndex = index
-      }
-    })
-    return matchIndex
-  }
-
   changeToMatchView = () => {
     const { players } = this.state
     this.setState({
@@ -57,7 +39,6 @@ export default class extends Component {
   backToMatchView = () => {
     this.setState({ showPlayersView: false, showMatchView: true, showStatsView: false })
   }
-
 
   changeToStatsView = () => {
     const { currentPlayers, waitingPlayers } = this.state
@@ -79,10 +60,11 @@ export default class extends Component {
   addPlayer = () => {
     const { players, inputValue } = this.state
     let { playerId } = this.state
-    const playerNewId = `${playerId}-${inputValue.substring(0, 3)}`
+    const playerName = inputValue.replace(/\s+/g, '')
+    const playerNewId = `${playerId}-${playerName.substring(0, 3)}`
     if (inputValue !== '') {
       players.push({
-        name: inputValue,
+        name: playerName,
         id: playerNewId,
         crown: false,
         gate: false,
@@ -120,7 +102,7 @@ export default class extends Component {
     const { newWaitingPlayers } = this.updateNewMatch(id)
     const newLooser = this.updateLooser(id)
     const { winnerChanges, updateGate } = this.updateWinner(id)
-    const winnerIndex = this.getPlayerIndex(newCurrentPlayers, id)
+    const winnerIndex = getPlayerIndex(newCurrentPlayers, id)
     const matches = this.saveMatch(id)
     newCurrentPlayers[winnerIndex] = winnerChanges
     if (updateGate) {
@@ -179,8 +161,8 @@ export default class extends Component {
       return matches
     }
 
-    const matchIndex = this.getMatchIndex(matches, `${winner[0].id}-${looser[0].id}`, `${looser[0].id}-${winner[0].id}`)
-    const winnerIndex = this.getPlayerIndex(matches[matchIndex].players, winner[0].id)
+    const matchIndex = getMatchIndex(matches, `${winner[0].id}-${looser[0].id}`, `${looser[0].id}-${winner[0].id}`)
+    const winnerIndex = getPlayerIndex(matches[matchIndex].players, winner[0].id)
     matches[matchIndex].players[winnerIndex] = {
       ...matches[matchIndex].players[winnerIndex],
       wins: matches[matchIndex].players[winnerIndex].wins += 1,
@@ -244,7 +226,7 @@ export default class extends Component {
 
   startGate = () => {
     const { waitingPlayers, currentGateId } = this.state
-    const newGateIndex = this.getPlayerIndex(waitingPlayers, currentGateId)
+    const newGateIndex = getPlayerIndex(waitingPlayers, currentGateId)
     waitingPlayers[newGateIndex] = {
       ...waitingPlayers[newGateIndex],
       gate: true,
@@ -358,15 +340,23 @@ export default class extends Component {
             }
           }
 
-          .standard-subtitle {
-            color: white;
-            font-size: #{$gutter * 3};
-            font-weight: bold;
-            text-align: center;
-            text-transform: uppercase;
-            text-shadow: 1px 1px darken(white, 75%), 2px 2px darken(white, 75%), 3px 3px darken(white, 75%), 4px 4px darken(white, 75%), 5px 5px darken(white, 75%);
-            @media( max-width: 768px ) {
-              font-size: 18px;
+          .standard {
+            &-subtitle, &-semititle {
+              color: white;
+              font-size: #{$gutter * 3};
+              font-weight: bold;
+              text-align: center;
+              text-transform: uppercase;
+              text-shadow: 1px 1px darken(white, 75%), 2px 2px darken(white, 75%), 3px 3px darken(white, 75%), 4px 4px darken(white, 75%), 5px 5px darken(white, 75%);
+              @media( max-width: 768px ) {
+                font-size: 24px;
+              }
+            }
+            &-semititle {
+              font-size: #{$gutter * 2};
+              @media( max-width: 768px ) {
+                font-size: 18px;
+              }
             }
           }
 
@@ -397,7 +387,7 @@ export default class extends Component {
             ),
             6: (
               color: $lime,
-              percentage: 15%,
+              percentage: 30%,
             ),
             7: (
               color: $orange,

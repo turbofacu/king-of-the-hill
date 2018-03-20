@@ -39,19 +39,20 @@ export default class AddPlayersView extends PureComponent {
     } = this.props
     return (
       <div className="standard-flex">
-        <div className="air-2">
+        <div className="add-players-input-wrapper standard-flex air-4">
           <Input
             inputValue={inputValue}
             getValue={returnPlayerValue}
             ref={ch => this.child = ch}
           />
-        </div>
-        <div className="text-center air-3">
-          <Button addPlayer={addPlayer} inputValue={inputValue} focusInput={this.focusInput} />
+          <Button addPlayer={addPlayer} text="Add" inputValue={inputValue} focusInput={this.focusInput} />
         </div>
         {players[0] && // If a players exists, show PlayerList
-          <div className="air-4">
-            <PlayersList players={players} removePlayer={removePlayer} />
+          <div>
+            <h2 className="standard-subtitle air-3">Players</h2>
+            <div className="air-4">
+              <PlayersList players={players} removePlayer={removePlayer} />
+            </div>
           </div>
         }
         {players[2] && // If three players exists, show the changeView button
@@ -59,6 +60,22 @@ export default class AddPlayersView extends PureComponent {
             <Button text="Start Match" className="magenta" changeView={changeView} />
           </div>
         }
+        <style jsx global>{`
+
+          @import './static/scss/variables';
+          @import './static/scss/mixins';
+
+          .add-players-input-wrapper {
+            align-items: center;
+            flex-direction: initial !important;
+            .button {
+              margin-left: #{$gutter * 2};
+              padding: 18px #{$gutter * 2};
+              box-sizing: border-box;
+            }
+          }
+
+        `}</style>
       </div>
     )
   }

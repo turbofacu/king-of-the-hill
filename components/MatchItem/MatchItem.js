@@ -29,11 +29,16 @@ export default class MatchItem extends PureComponent {
 
   renderCrown = () => {
     const { crown } = this.props
+    const crowns = []
     let i
     for (i = 0; i < crown; i += 1) {
-      return <img className="match-item-crown" src="./static/images/crown.png" alt="crown" />
+      crowns.push(true)
     }
-    return false
+    return (
+      <div className="match-item-status match-item-crown-wrapper">
+        { crowns.map((e, index) => <img className="match-item-status-icon match-item-crown" src={`./static/images/crown-${index}.png`} alt="crown" />) }
+      </div>
+    )
   }
 
   render() {
@@ -47,7 +52,9 @@ export default class MatchItem extends PureComponent {
       <div className={`match-item item-with-color big ${crown} gate-${gate} color-${id.substring(0, 1)}`} onClick={this.handleClick} role="button" tabIndex={0}>
         <span className="match-item-name">{name}</span>
         {gate &&
-          <img className="match-item-gate" src="./static/images/skull-black.png" alt="skull" />
+          <div className="match-item-status">
+            <img className="match-item-status-icon match-item-gate" src="./static/images/skull-black.png" alt="skull" />
+          </div>
         }
         {crown >= 1 &&
           this.renderCrown()
@@ -89,17 +96,6 @@ export default class MatchItem extends PureComponent {
               &:active {
                 transform: scale(0.9);
               }
-              &-gate {
-                width: 40px;
-                height: auto;
-                position: absolute;
-                bottom: $gutter;
-                right: $gutter;
-                @media( max-width: 768px ) {
-                  height: 25px;
-                  width: auto;
-                }
-              }
               &-name {
                 text-align: center;
                 max-width: 100%;
@@ -117,17 +113,24 @@ export default class MatchItem extends PureComponent {
 
           @import './static/scss/variables';
 
-          .match-item-crown {
-            width: 40px;
-            height: auto;
-            position: absolute;
-            bottom: $gutter;
-            right: $gutter;
-            @media( max-width: 768px ) {
-              height: 25px;
-              width: auto;
+          .match-item {
+            &-status {
+              display: flex;
+              position: absolute;
+              bottom: $gutter;
+              right: $gutter;
+              &-icon {
+                height: 40px;
+                width: auto;
+                margin-left: #{$gutter / 2};
+                @media( max-width: 768px ) {
+                  height: 20px;
+                  width: auto;
+                }
+              }
             }
           }
+
         `}</style>
       </div>
     )

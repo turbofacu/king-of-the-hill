@@ -29,11 +29,13 @@ export default class MatchView extends PureComponent {
     } = this.props
     return (
       <div className="standard-flex">
+        <h2 className="standard-subtitle air-3">Current Match</h2>
         <div className="air-4">
           <Match
             currentPlayers={currentPlayers}
             updatePlayers={updatePlayers}
           />
+          <h2 className="standard-semititle air-2">Waiting Players</h2>
           <PlayersList players={waitingPlayers} />
         </div>
         <div className="text-center">

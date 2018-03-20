@@ -48,10 +48,16 @@ export default class Input extends PureComponent {
         <style jsx>{`
 
           @import './static/scss/variables';
+          @import './static/scss/mixins';
 
           .input-wrapper {
+            width: 100%;
             position: relative;
             overflow: hidden;
+            @include itemBorderBig(#000);
+            &:focus-within {
+              @include itemBorderBig($magenta);
+            }
             &:hover {
               .standard-input {
                 border: 2px solid magenta, 25%;
