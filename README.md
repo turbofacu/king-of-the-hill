@@ -2,7 +2,7 @@
 
 A webapp to track wins and looses in a King of the Hill type of game
 
-![First screen of the King of the Hill app](assets/readme-image.jpg)
+![First screen of the King of the Hill app](assets/readme-image.png)
 
 ## Description
 
