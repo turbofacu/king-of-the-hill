@@ -2,6 +2,8 @@
 
 A webapp to track wins and looses in a King of the Hill type of game
 
+![First screen of the King of the Hill app](assets/readme-image.jpg)
+
 ## Description
 
 My friends and I love playing video games, so every Friday night we get together and start new adventures. One day one of the guys surprised us by buying an arcade machine, which came with the very famous game Puzzle Bubble and got us addicted immediately.
