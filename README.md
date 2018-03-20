@@ -1,6 +1,6 @@
 # King Of The Hill
 
-A webapp to track wins and looses in a King of the Hill type of game
+A webapp to track wins and loses in a King of the Hill type of game
 
 ![First screen of the King of the Hill app](assets/readme-image.png)
 
@@ -20,6 +20,10 @@ After a player has completed a match, the WaitingPlayersList will update and sho
 A player can win a crown when it has made a round (beaten all the waiting players in a row). So, the skull beside the waiting players name (the gate keeper, as we like to call it) is the last player to be beaten by the current winner in its way to get a crown.
 
 Once all the matches have been played (there’s no limit) you get to see the StatsView. On this view you can check out more in-depth stats of any player, best streak, crowns and even their record against other players.
+
+## Misc
+
+Special thanks to my friends Moti, Thomy, Nahue, Herni, Maxi, Ricky, Joaco, Chomp and Fede who gave me the inspiration to code this :)
 
 ## Dev Enviroment
 
