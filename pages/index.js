@@ -11,6 +11,7 @@ import StatsView from '../components/StatsView/StatsView'
 
 export default class extends Component {
   state = {
+    render: false,
     showPlayersView: true,
     showMatchView: false,
     showStatsView: false,
@@ -22,6 +23,11 @@ export default class extends Component {
     currentGateId: null,
     matches: [],
     inputValue: '',
+    crownSrc: 0,
+  }
+
+  componentDidMount() {
+    this.setState({ render: true })
   }
 
   changeToMatchView = () => {
@@ -101,7 +107,7 @@ export default class extends Component {
     const { newCurrentPlayers } = this.updateNewMatch(id)
     const { newWaitingPlayers } = this.updateNewMatch(id)
     const newLooser = this.updateLooser(id)
-    const { winnerChanges, updateGate } = this.updateWinner(id)
+    const { winnerChanges, updateGate, newCrownSrc } = this.updateWinner(id)
     const winnerIndex = getPlayerIndex(newCurrentPlayers, id)
     const matches = this.saveMatch(id)
     newCurrentPlayers[winnerIndex] = winnerChanges
@@ -120,6 +126,7 @@ export default class extends Component {
       currentPlayers: newCurrentPlayers,
       waitingPlayers: newWaitingPlayers,
       matches,
+      crownSrc: newCrownSrc,
     })
   }
 
@@ -188,7 +195,12 @@ export default class extends Component {
   }
 
   updateWinner = (id) => {
-    const { players, currentPlayers, currentWinnerId } = this.state
+    const {
+      players,
+      currentPlayers,
+      currentWinnerId,
+      crownSrc,
+    } = this.state
     const winner = currentPlayers.filter(e => e.id === id)
     let updateGate = false
     winner[0] = {
@@ -212,15 +224,21 @@ export default class extends Component {
         bestStreak: winner[0].stats.streak,
       }
     }
+    let newCrownSrc = crownSrc
     if (winner[0].stats.streak >= players.length - 1) {
       winner[0].crown = Math.floor(winner[0].stats.streak / (players.length - 1))
       if (winner[0].crown > winner[0].stats.totalCrowns) {
         winner[0].stats.totalCrowns += winner[0].crown
+        do {
+          newCrownSrc = Math.floor(Math.random() * 3) + 1
+        } while (newCrownSrc === crownSrc)
       }
     }
+    console.log(newCrownSrc)
     return ({
       winnerChanges: winner[0],
       updateGate,
+      newCrownSrc,
     })
   }
 
@@ -235,6 +253,7 @@ export default class extends Component {
 
   render() {
     const {
+      render,
       showPlayersView,
       showMatchView,
       showStatsView,
@@ -243,6 +262,7 @@ export default class extends Component {
       waitingPlayers,
       inputValue,
       matches,
+      crownSrc,
     } = this.state
 
     return (
@@ -252,34 +272,36 @@ export default class extends Component {
           <link rel="stylesheet" href="./static/css/fonts.css" />
         </Head>
         <SVGSprites />
-        <div className="container">
-          <Header />
-          {showPlayersView &&
-            <AddPlayersView
-              changeView={this.changeToMatchView}
-              addPlayer={this.addPlayer}
-              removePlayer={this.removePlayer}
-              returnPlayerValue={this.returnPlayerValue}
-              players={players}
-              inputValue={inputValue}
-            />
-          }
-          {showMatchView &&
-            <MatchView
-              waitingPlayers={waitingPlayers}
-              currentPlayers={currentPlayers}
-              updatePlayers={this.updatePlayers}
-              changeView={this.changeToStatsView}
-            />
-          }
-          {showStatsView &&
-            <StatsView
-              players={players}
-              matches={matches}
-              changeView={this.backToMatchView}
-            />
-          }
-        </div>
+        {render &&
+          <div className="container">
+            <Header crownSrc={crownSrc} />
+            {showPlayersView &&
+              <AddPlayersView
+                changeView={this.changeToMatchView}
+                addPlayer={this.addPlayer}
+                removePlayer={this.removePlayer}
+                returnPlayerValue={this.returnPlayerValue}
+                players={players}
+                inputValue={inputValue}
+              />
+            }
+            {showMatchView &&
+              <MatchView
+                waitingPlayers={waitingPlayers}
+                currentPlayers={currentPlayers}
+                updatePlayers={this.updatePlayers}
+                changeView={this.changeToStatsView}
+              />
+            }
+            {showStatsView &&
+              <StatsView
+                players={players}
+                matches={matches}
+                changeView={this.backToMatchView}
+              />
+            }
+          </div>
+        }
         <style jsx global>{`
 
           @import './static/scss/variables';
@@ -295,10 +317,6 @@ export default class extends Component {
           body {
             font-family: $ff;
             background-color: $black;
-            padding: 0 0 #{$gutter * 3};
-            @media( max-width: 768px ) {
-              padding: 0 10px #{$gutter * 3};
-            }
           }
 
           .container {
@@ -309,6 +327,11 @@ export default class extends Component {
             justify-content: center;
             max-width: 600px;
             margin: 0 auto;
+            padding: 0 0 #{$gutter * 3};
+            box-sizing: border-box;
+            @media( max-width: 768px ) {
+              padding: 0 10px #{$gutter * 3};
+            }
           }
 
           .standard-flex {

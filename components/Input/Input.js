@@ -72,8 +72,9 @@ export default class Input extends PureComponent {
               right: 0;
               bottom: 0;
               transform: scale(1.034, 1); //HACK
-              stroke-dasharray: 40;
-              animation: dash 7s linear infinite;
+              stroke-dasharray: 31;
+              stroke-dashoffset: 0;
+              animation: dash 2s linear infinite;
               pointer-events: none;
             }
           }
@@ -87,6 +88,7 @@ export default class Input extends PureComponent {
             padding: 16px;
             transition: all 25ms ease-out;
             border: 2px solid lighten($black, 2%);
+            border-radius: 0;
             box-sizing: border-box;
             appearance: none;
             -moz-appearance: none;
@@ -101,8 +103,35 @@ export default class Input extends PureComponent {
 
 
           @keyframes dash {
-            to {
-              stroke-dashoffset: 1000;
+            0%, 9% {
+              stroke-dashoffset: 0;
+            }
+            10%, 19% {
+              stroke-dashoffset: 100;
+            }
+            20%, 29% {
+              stroke-dashoffset: 200;
+            }
+            30%, 39% {
+              stroke-dashoffset: 300;
+            }
+            40%, 49% {
+              stroke-dashoffset: 400;
+            }
+            50%, 59% {
+              stroke-dashoffset: 500;
+            }
+            60%, 69% {
+              stroke-dashoffset: 600;
+            }
+            70%, 79% {
+              stroke-dashoffset: 700;
+            }
+            80%, 89% {
+              stroke-dashoffset: 800;
+            }
+            90%, 100% {
+              stroke-dashoffset: 900;
             }
           }
 

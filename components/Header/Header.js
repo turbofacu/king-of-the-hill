@@ -3,11 +3,11 @@ import PropTypes from 'prop-types'
 
 export default class Button extends PureComponent {
   static propTypes = {
-    text: PropTypes.string,
+    crownSrc: PropTypes.number,
   }
 
   static defaultProps = {
-    text: 'Add Player',
+    crownSrc: 0,
   }
 
   state = {
@@ -20,13 +20,13 @@ export default class Button extends PureComponent {
 
   render() {
     const { animate } = this.state
-    const { text } = this.props
+    const { crownSrc } = this.props
 
     return (
       <header className={`header standard-title ${animate} air-4`}>
         <h1 className="header-title">
           <div className="header-crown-wrapper">
-            <span className="header-crown-letter">K<img className="header-crown" src="./static/images/crown.png" alt="crown" /></span>
+            <span className="header-crown-letter">K<img className="header-crown" src={`./static/images/crown-${crownSrc}.png`} alt="crown" /></span>
             ing
           </div>
           <span className="header-title-text"> of the hill</span>
@@ -37,7 +37,6 @@ export default class Button extends PureComponent {
           @import './static/scss/variables';
 
           .header {
-            font-size: 32px;
             text-transform: uppercase;
             display: flex;
             align-items: center;
@@ -45,15 +44,16 @@ export default class Button extends PureComponent {
             position: relative;
             &.animate {
               .header-crown {
-                animation: crown 350ms cubic-bezier(0, 0, 0.53, 1.38) 1 forwards;
+                animation: crown 2s cubic-bezier(0, 0, 0.53, 1.38) 1 forwards;
                 transform-origin: right bottom;
               }
             }
             &-title {
               font-size: 68px;
+              word-spacing: -18px;
               padding-top: #{$gutter * 4};
               @media(max-width: 768px) {
-                font-size: 40px;
+                font-size: 44px;
               }
             }
             &-crown {
@@ -81,8 +81,20 @@ export default class Button extends PureComponent {
             0% {
               transform: translate3d(0, -50px, 0) rotate(0deg);
             }
-            80% {
+            10% {
               transform: translate3d(0, 0, 0) rotate(0deg);
+            }
+            15%  {
+              transform: translate3d(0, -3px, 0) rotate(0deg);
+            }
+            25% {
+              transform: translate3d(0, 0, 0) rotate(-9deg);
+            }
+            60% {
+              transform: translate3d(0, 0, 0) rotate(-9deg);
+            }
+            65% {
+              transform: translate3d(0, 0, 0) rotate(-15deg);
             }
             100% {
               transform: translate3d(0, 0, 0) rotate(-15deg);
