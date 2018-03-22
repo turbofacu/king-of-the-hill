@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 
 import cn from 'classnames'
 
+import PlayerMatchesHistory from '../PlayerMatchesHistory/PlayerMatchesHistory'
+
 export default class PlayerItem extends Component {
   static propTypes = {
     removePlayer: PropTypes.func,
@@ -99,26 +101,7 @@ export default class PlayerItem extends Component {
               </div>
               <div>
                 <p className="player-stats-big-title air-1">Matches</p>
-                <ul className="player-stats-big-matches">
-                  {matches.map((e) => {
-                    if (e.matchId.substring(0, 5) === id || e.matchId.substring(6, 11) === id) {
-                      let winnerClass = 'winner-standard'
-                      if (e.matchId.substring(6, 11) === id) {
-                        winnerClass = 'winner-reverse'
-                      }
-                      return (
-                        <li className={`player-stats-big-match ${winnerClass} air-1`}>
-                          {e.players.map(el => (
-                            <div className="player-stats-big-player">
-                              <span>{ el.name }</span><span>{ el.wins }</span>
-                            </div>
-                          ))}
-                        </li>
-                      )
-                    }
-                    return false
-                  })}
-                </ul>
+                <PlayerMatchesHistory matches={matches} id={id} />
               </div>
             </div>
           }
@@ -144,65 +127,6 @@ export default class PlayerItem extends Component {
             &-title {
               font-size: #{$gutter * 1.8};
               font-weight: bold;
-            }
-            &-player {
-              span {
-                display: block;
-                margin: 0 5px;
-              }
-            }
-            &-match {
-              display: flex;
-              &.winner-standard {
-                .player-stats-big-player {
-                  display: flex;
-                  &:first-child {
-                    span {
-                      &:first-child {
-                        display: none;
-                      }
-                    }
-                  }
-                  &:last-child {
-                    span {
-                      order: 2;
-                      &:last-child {
-                        order: 1;
-                        &:before {
-                          content: '-';
-                          margin-right: 5px;
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-              &.winner-reverse {
-                .player-stats-big-player {
-                  order: 1;
-                  &:first-child {
-                    display: flex;
-                    order: 2;
-                    > span {
-                      order: 2;
-                      &:last-child {
-                        order: 1;
-                        &:before {
-                          content: '-';
-                          margin-right: 5px;
-                        }
-                      }
-                    }
-                  }
-                  &:last-child {
-                    span {
-                      &:first-child {
-                        display: none;
-                      }
-                    }
-                  }
-                }
-              }
             }
           }
 

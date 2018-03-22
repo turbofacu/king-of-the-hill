@@ -73,6 +73,10 @@ export default class Button extends PureComponent {
               }
               &-wrapper {
                 margin-bottom: $gutter;
+                font-size: 80px;
+                @media(max-width: 768px) {
+                  font-size: 54px;
+                }
               }
             }
           }

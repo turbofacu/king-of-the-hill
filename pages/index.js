@@ -17,12 +17,22 @@ export default class extends Component {
     showStatsView: false,
     players: [],
     playerId: 0,
+    inputValue: '',
     currentPlayers: [],
     waitingPlayers: [],
     currentWinnerId: null,
     currentGateId: null,
     matches: [],
-    inputValue: '',
+    matchesHistory: [],
+    gameStats: {
+      matchStart: '',
+      totalMatches: 0,
+      winnerPosition: {
+        playerOne: 0,
+        playerTwo: 0,
+      },
+    },
+    currentMatchTime: '',
     crownSrc: 0,
   }
 
@@ -31,14 +41,25 @@ export default class extends Component {
   }
 
   changeToMatchView = () => {
-    const { players } = this.state
+    const { players, gameStats } = this.state
+    const date = new Date()
+    const dateHuman = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
+    const newGameStats = {
+      ...gameStats,
+      matchStart: dateHuman,
+    }
     this.setState({
       currentPlayers: players.filter((e, i) => i < 2),
       waitingPlayers: players.filter((e, i) => i > 1),
       currentGateId: players[players.length - 1].id,
     }, () => {
       this.startGate()
-      this.setState({ showPlayersView: false, showMatchView: true })
+      this.setState({
+        showPlayersView: false,
+        showMatchView: true,
+        currentMatchTime: date,
+        gameStats: newGameStats,
+      })
     })
   }
 
@@ -104,12 +125,12 @@ export default class extends Component {
   }
 
   updateMatchView = (id) => {
-    const { newCurrentPlayers } = this.updateNewMatch(id)
-    const { newWaitingPlayers } = this.updateNewMatch(id)
+    let newGameStats = this.saveGameStats(id)
+    const { newCurrentPlayers, newWaitingPlayers } = this.updateNewMatch(id)
     const newLooser = this.updateLooser(id)
     const { winnerChanges, updateGate, newCrownSrc } = this.updateWinner(id)
     const winnerIndex = getPlayerIndex(newCurrentPlayers, id)
-    const matches = this.saveMatch(id)
+    const { matches, matchesHistory, time, date } = this.saveMatch(id)
     newCurrentPlayers[winnerIndex] = winnerChanges
     if (updateGate) {
       newWaitingPlayers.forEach((e) => {
@@ -120,13 +141,22 @@ export default class extends Component {
       })
       newWaitingPlayers[newWaitingPlayers.length - 1].gate = true
     }
+
+    newGameStats = {
+      ...newGameStats,
+      matchTime: time,
+    }
     newWaitingPlayers.push(newLooser)
+    console.log(date)
     this.setState({
       currentWinnerId: winnerChanges.id,
       currentPlayers: newCurrentPlayers,
       waitingPlayers: newWaitingPlayers,
       matches,
+      matchesHistory,
+      gameStats: newGameStats,
       crownSrc: newCrownSrc,
+      currentMatchTime: date,
     })
   }
 
@@ -142,10 +172,59 @@ export default class extends Component {
     })
   }
 
+  saveGameStats = (id) => {
+    const { currentPlayers, gameStats } = this.state
+    const winnerIndex = getPlayerIndex(currentPlayers, id)
+    const newGameStats = {
+      ...gameStats,
+      totalMatches: gameStats.totalMatches + 1,
+    }
+    if (winnerIndex === 0) {
+      newGameStats.winnerPosition = {
+        ...newGameStats.winnerPosition,
+        playerOne: newGameStats.winnerPosition.playerOne + 1,
+      }
+    } else {
+      newGameStats.winnerPosition = {
+        ...newGameStats.winnerPosition,
+        playerTwo: newGameStats.winnerPosition.playerTwo + 1,
+      }
+    }
+
+    return newGameStats
+  }
+
   saveMatch = (id) => {
-    const { currentPlayers, matches } = this.state
+    const {
+      currentPlayers,
+      matches,
+      matchesHistory,
+      currentMatchTime,
+    } = this.state
     const winner = currentPlayers.filter(e => e.id === id)
     const looser = currentPlayers.filter(e => e.id !== id)
+
+    const date = new Date()
+    const time = Math.abs(date.getTime() - currentMatchTime.getTime()) / 1000;
+
+    const newMatchItem = {
+      matchTime: time,
+      players: [
+        {
+          id: winner[0].id,
+          name: winner[0].name,
+          wins: 1,
+        },
+        {
+          id: looser[0].id,
+          name: looser[0].name,
+          wins: 0,
+        },
+      ],
+    }
+
+    matchesHistory.push(newMatchItem)
+
     const match = matches.filter(e => e.matchId === `${winner[0].id}-${looser[0].id}` || e.matchId === `${looser[0].id}-${winner[0].id}`)
 
     if (!match[0]) {
@@ -165,7 +244,12 @@ export default class extends Component {
         ],
       }
       matches.push(newMatch)
-      return matches
+      return ({
+        matches,
+        matchesHistory,
+        time,
+        date,
+      })
     }
 
     const matchIndex = getMatchIndex(matches, `${winner[0].id}-${looser[0].id}`, `${looser[0].id}-${winner[0].id}`)
@@ -175,7 +259,7 @@ export default class extends Component {
       wins: matches[matchIndex].players[winnerIndex].wins += 1,
     }
 
-    return matches
+    return ({ matches, matchesHistory, time, date })
   }
 
   updateLooser = (id) => {
@@ -234,7 +318,6 @@ export default class extends Component {
         } while (newCrownSrc === crownSrc)
       }
     }
-    console.log(newCrownSrc)
     return ({
       winnerChanges: winner[0],
       updateGate,
@@ -262,7 +345,9 @@ export default class extends Component {
       waitingPlayers,
       inputValue,
       matches,
+      matchesHistory,
       crownSrc,
+      gameStats,
     } = this.state
 
     return (
@@ -297,7 +382,9 @@ export default class extends Component {
               <StatsView
                 players={players}
                 matches={matches}
+                matchesHistory={matchesHistory}
                 changeView={this.backToMatchView}
+                gameStats={gameStats}
               />
             }
           </div>
@@ -381,6 +468,16 @@ export default class extends Component {
                 font-size: 18px;
               }
             }
+          }
+
+          .standard-list-item {
+            color: white;
+            font-size: 18px;
+            margin-bottom: 12px;
+            padding: 12px 16px;
+            list-style: none;
+            position: relative;
+            border: 0;
           }
 
           $player-colors : (
