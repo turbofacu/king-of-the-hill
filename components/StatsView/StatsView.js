@@ -5,6 +5,7 @@ import Button from '../Button/Button'
 import PlayersList from '../PlayersList/PlayersList'
 import MatchesHistoryList from '../MatchesHistoryList/MatchesHistoryList'
 import MatchesHistoryStats from '../MatchesHistoryStats/MatchesHistoryStats'
+import AchievementsList from '../AchievementsList/AchievementsList'
 
 export default class StatsView extends PureComponent {
   static propTypes = {
@@ -43,6 +44,10 @@ export default class StatsView extends PureComponent {
         <div className="air-4">
           <h2 className="standard-subtitle air-3">Matches Stats</h2>
           <MatchesHistoryStats gameStats={gameStats} />
+        </div>
+        <div className="air-4">
+          <h2 className="standard-subtitle air-3">Achievements</h2>
+          <AchievementsList matches={matchesHistory} players={players} />
         </div>
         <div className="air-4">
           <h2 className="standard-subtitle air-3">Matches History</h2>

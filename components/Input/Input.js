@@ -71,11 +71,14 @@ export default class Input extends PureComponent {
               left: 0;
               right: 0;
               bottom: 0;
-              transform: scale(1.034, 1); //HACK
+              transform: scale(1.031, 1); //HACK
               stroke-dasharray: 31;
               stroke-dashoffset: 0;
               animation: dash 2s linear infinite;
               pointer-events: none;
+              @media(max-width: 768px) {
+                transform: scale(1.025, 1); //HACK
+              }
             }
           }
 

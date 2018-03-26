@@ -93,7 +93,7 @@ export default class extends Component {
       players.push({
         name: playerName,
         id: playerNewId,
-        crown: false,
+        crown: 0,
         gate: false,
         stats: {
           wins: 0,
@@ -130,7 +130,12 @@ export default class extends Component {
     const newLooser = this.updateLooser(id)
     const { winnerChanges, updateGate, newCrownSrc } = this.updateWinner(id)
     const winnerIndex = getPlayerIndex(newCurrentPlayers, id)
-    const { matches, matchesHistory, time, date } = this.saveMatch(id)
+    const {
+      matches,
+      matchesHistory,
+      time,
+      date,
+    } = this.saveMatch(id)
     newCurrentPlayers[winnerIndex] = winnerChanges
     if (updateGate) {
       newWaitingPlayers.forEach((e) => {
@@ -147,7 +152,6 @@ export default class extends Component {
       matchTime: time,
     }
     newWaitingPlayers.push(newLooser)
-    console.log(date)
     this.setState({
       currentWinnerId: winnerChanges.id,
       currentPlayers: newCurrentPlayers,
@@ -259,7 +263,12 @@ export default class extends Component {
       wins: matches[matchIndex].players[winnerIndex].wins += 1,
     }
 
-    return ({ matches, matchesHistory, time, date })
+    return ({
+      matches,
+      matchesHistory,
+      time,
+      date,
+    })
   }
 
   updateLooser = (id) => {
@@ -376,6 +385,7 @@ export default class extends Component {
                 currentPlayers={currentPlayers}
                 updatePlayers={this.updatePlayers}
                 changeView={this.changeToStatsView}
+                matches={matches}
               />
             }
             {showStatsView &&
@@ -484,50 +494,63 @@ export default class extends Component {
             0: (
               color: $cyan,
               percentage: 25%,
+              border: 20%,
             ),
             1: (
               color: $lila,
               percentage: 20%,
+              border: 15%,
             ),
             2: (
               color: $crimson,
               percentage: 15%,
+              border: 10%,
             ),
             3: (
               color: $yellow,
               percentage: 25%,
+              border: 20%,
             ),
             4: (
               color: $pink,
               percentage: 15%,
+              border: 10%,
             ),
             5: (
               color: $magenta,
               percentage: 15%,
+              border: 10%,
             ),
             6: (
               color: $lime,
               percentage: 30%,
+              border: 25%,
             ),
             7: (
               color: $orange,
               percentage: 15%,
+              border: 10%,
             ),
             8: (
               color: $aquamarine,
               percentage: 15%,
+              border: 10%,
             ),
             9: (
               color: $green,
               percentage: 15%,
+              border: 10%,
             ),
           );
 
           .item-with-color {
+            border-top: 0 !important;
+            border-left: 0 !important;
             &.big {
               @each $player, $style in $player-colors {
                 &.color-#{$player} {
                   background-color: map-get($style, color);
+                  border: 2px solid darken(map-get($style, color), map-get($style, border));
                   @include itemBorderBig(darken(map-get($style, color), map-get($style, percentage)));
                 }
               }
@@ -536,6 +559,7 @@ export default class extends Component {
               @each $player, $style in $player-colors {
                 &.color-#{$player} {
                   background-color: map-get($style, color);
+                  border: 2px solid darken(map-get($style, color), map-get($style, border));
                   @include itemBorderSmall(darken(map-get($style, color), map-get($style, percentage)));
                 }
               }

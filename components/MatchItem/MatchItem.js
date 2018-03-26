@@ -5,7 +5,7 @@ export default class MatchItem extends PureComponent {
   static propTypes = {
     updatePlayers: PropTypes.func,
     name: PropTypes.string,
-    id: PropTypes.number,
+    id: PropTypes.string,
     crown: PropTypes.number,
     gate: PropTypes.bool,
   }

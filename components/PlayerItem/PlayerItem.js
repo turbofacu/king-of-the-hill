@@ -9,7 +9,7 @@ export default class PlayerItem extends Component {
   static propTypes = {
     removePlayer: PropTypes.func,
     name: PropTypes.string,
-    id: PropTypes.number,
+    id: PropTypes.string,
     gate: PropTypes.bool,
     stats: PropTypes.objectOf(PropTypes.number),
     className: PropTypes.string,

@@ -16,7 +16,7 @@ export default class MatchHistoryItem extends Component {
     const { players, winnerClass } = this.props
 
     return (
-      <div className={`match-history-item ${winnerClass} air-1`}>
+      <div className={`match-history-item ${winnerClass}`}>
         {players.map(el => (
           <div className="match-history-item-player">
             <span>{ el.name }</span><span>{ el.wins }</span>
@@ -39,13 +39,6 @@ export default class MatchHistoryItem extends Component {
             &.winner-standard {
               .match-history-item-player {
                 display: flex;
-                // &:first-child {
-                //   span {
-                //     &:first-child {
-                //       display: none;
-                //     }
-                //   }
-                // }
                 &:last-child {
                   span {
                     order: 2;

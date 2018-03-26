@@ -55,7 +55,7 @@ export default class AddPlayersView extends PureComponent {
             </div>
           </div>
         }
-        {players[2] && // If three players exists, show the changeView button
+        {players[3] && // If four players exists, show the changeView button
           <div className="text-center">
             <Button text="Start Match" className="magenta" changeView={changeView} />
           </div>

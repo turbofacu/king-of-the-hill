@@ -11,6 +11,7 @@ export default class MatchView extends PureComponent {
     currentPlayers: PropTypes.arrayOf(PropTypes.object),
     waitingPlayers: PropTypes.arrayOf(PropTypes.object),
     updatePlayers: PropTypes.func,
+    matches: PropTypes.arrayOf(PropTypes.object),
   }
 
   static defaultProps = {
@@ -18,6 +19,7 @@ export default class MatchView extends PureComponent {
     updatePlayers: () => {},
     currentPlayers: [],
     waitingPlayers: [],
+    matches: [],
   }
 
   render() {
@@ -26,6 +28,7 @@ export default class MatchView extends PureComponent {
       updatePlayers,
       currentPlayers,
       waitingPlayers,
+      matches,
     } = this.props
     return (
       <div className="standard-flex">
@@ -38,9 +41,11 @@ export default class MatchView extends PureComponent {
           <h2 className="standard-semititle air-2">Waiting Players</h2>
           <PlayersList players={waitingPlayers} />
         </div>
-        <div className="text-center">
-          <Button text="Game Stats" className="orange" changeView={changeView} />
-        </div>
+        {matches[0] &&
+          <div className="text-center">
+            <Button text="Game Stats" className="orange" changeView={changeView} />
+          </div>
+        }
       </div>
     )
   }

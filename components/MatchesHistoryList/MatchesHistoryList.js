@@ -14,7 +14,6 @@ export default class MatchesHistoryList extends Component {
 
   render() {
     const { matches } = this.props
-
     return (
       <div className="matches-history-list">
         {matches.map((e, i) => {
@@ -23,10 +22,10 @@ export default class MatchesHistoryList extends Component {
           return (
             <div className="matches-history-item-wrapper standard-list-item">
               <div className="matches-history-item-flex">
-                <span className="matches-history-number">{i + 1}. </span>
-                <MatchHistoryItem players={e.players} winnerClass="winner-standard" />
+                <span className="matches-history-item-number">{i + 1}. </span>
+                <MatchHistoryItem players={e.players} />
               </div>
-              <span className="matches-history-number">{matchTime}</span>
+              <span className="matches-history-item-time"><img className="matches-history-item-time-icon" src="./static/images/clock.png" alt="clock icon" />{matchTime}</span>
             </div>
           )
         })
@@ -36,27 +35,37 @@ export default class MatchesHistoryList extends Component {
           @import './static/scss/variables';
           @import './static/scss/mixins';
 
-          .matches-history-item-flex {
-            display: flex;
+          .matches-history-item {
+            &-flex {
+              display: flex;
+            }
+            &-time {
+              display: flex;
+              align-items: center;
+              &-icon {
+                height: 25px;
+                width: auto;
+                margin-right: $gutter;
+              }
+            }
           }
 
           .matches-history-item-wrapper {
             display: flex;
             justify-content: space-between;
-            @for $i from 1 to 200 {
+            align-items: center;
+            border-top: 0 !important;
+            border-left: 0 !important;
+            @for $i from 1 to 50 {
               &:nth-child(#{$i}) {
-                @if $i <= 50 {
-                  @include itemBorderSmall(rgba(225, ($i * 5), 138, 1));
-                }
-                @else if $i <= 100 {
-                  @include itemBorderSmall(rgba(($i * 5), 213, 138, 1));
-                }
-                @else if $i <= 150 {
-                  @include itemBorderSmall(rgba(($i * 5), 100, 70, 1));
-                }
-                @else {
-                  @include itemBorderSmall(rgba(150, 150, ($i * 5), 1));
-                }
+                @include itemBorderSmall(rgba(98, ($i * 5), 170, 1));
+                border: 2px solid lighten(rgba(98, ($i * 5), 170, 1), 5%);
+              }
+            }
+            @for $i from 50 to 101 {
+              &:nth-child(#{$i}) {
+                @include itemBorderSmall(rgba((($i - 49) * 5), 250, 170, 1));
+                border: 2px solid lighten(rgba((($i - 49) * 5), 250, 170, 1), 5%);
               }
             }
           }

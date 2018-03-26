@@ -88,9 +88,10 @@ export default class Button extends PureComponent {
             display: inline-block;
             cursor: pointer;
             position: relative;
-            border: 0;
             transition: transform 25ms linear;
             transform-origin: bottom right;
+            border-top: 0 !important;
+            border-left: 0 !important;
             &:focus {
               outline: none;
             }
@@ -103,14 +104,17 @@ export default class Button extends PureComponent {
             &.magenta {
               background-color: $magenta;
               @include itemBorderBig(darken($magenta, 8%));
+              border: 2px solid darken($magenta, 3%);
             }
             &.orange {
               background-color: $orange;
               @include itemBorderBig(darken($orange, 8%));
+              border: 2px solid darken($orange, 3%);
             }
             &.crimson {
-              background-color: lighten($crimson, 15%);
-              @include itemBorderBig($crimson);
+              background-color: $crimson;
+              @include itemBorderBig(darken($crimson, 8%));
+              border: 2px solid darken($crimson, 3%);
             }
           }
 
