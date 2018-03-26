@@ -6,7 +6,7 @@
   "license": "ISC",
   "scripts": {
     "dev": "next",
-    "build": "next build",
+    "build": "next build && next export",
     "export": "next export",
     "start": "next start -p 9090",
     "lint": "eslint -c .eslintrc.json .",
