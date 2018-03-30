@@ -23,7 +23,6 @@ export default class Input extends PureComponent {
     this.textInput.focus();
   }
 
-
   render() {
     const { text, inputValue } = this.props
     return (

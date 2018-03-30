@@ -86,9 +86,12 @@ export default class AchievementsList extends Component {
       return b.stats.totalCrowns - a.stats.totalCrowns
     })
     const { name } = playersOrder[0]
-    return (
-      <AchievementsItem name={name} title={title} badge={badge} medal={medal} />
-    )
+    if (playersOrder[0].stats.totalCrowns >= 1) {
+      return (
+        <AchievementsItem name={name} title={title} badge={badge} medal={medal} />
+      )
+    }
+    return false
   }
 
   achievementStreak = (players, badge, title, medal) => {
@@ -125,6 +128,11 @@ export default class AchievementsList extends Component {
           .achievements-list {
             display: flex;
             flex-wrap: wrap;
+            @media(max-width: 600px) {
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+            }
           }
 
         `}

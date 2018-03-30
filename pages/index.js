@@ -151,7 +151,9 @@ export default class extends Component {
       ...newGameStats,
       matchTime: time,
     }
+
     newWaitingPlayers.push(newLooser)
+
     this.setState({
       currentWinnerId: winnerChanges.id,
       currentPlayers: newCurrentPlayers,
@@ -166,12 +168,20 @@ export default class extends Component {
 
   updateNewMatch = (id) => {
     const { currentPlayers, waitingPlayers } = this.state
+    const winnerIndex = getPlayerIndex(currentPlayers, id)
+    const newCurrentPlayers = [...currentPlayers]
+    if (winnerIndex === 1) {
+      newCurrentPlayers.unshift({
+        ...waitingPlayers[0],
+      })
+    } else {
+      newCurrentPlayers.push({
+        ...waitingPlayers[0],
+      })
+    }
     const newPlayerId = waitingPlayers[0].id
-    currentPlayers.push({
-      ...waitingPlayers[0],
-    })
     return ({
-      newCurrentPlayers: currentPlayers.filter(e => e.id === id || e.id === newPlayerId),
+      newCurrentPlayers: newCurrentPlayers.filter(e => e.id === id || e.id === newPlayerId),
       newWaitingPlayers: waitingPlayers.filter(e => e.id !== newPlayerId),
     })
   }
@@ -205,9 +215,8 @@ export default class extends Component {
       matchesHistory,
       currentMatchTime,
     } = this.state
-    const winner = currentPlayers.filter(e => e.id === id)
-    const looser = currentPlayers.filter(e => e.id !== id)
 
+    const currentWinnerIndex = getPlayerIndex(currentPlayers, id)
     const date = new Date()
     const time = Math.abs(date.getTime() - currentMatchTime.getTime()) / 1000;
 
@@ -215,19 +224,27 @@ export default class extends Component {
       matchTime: time,
       players: [
         {
-          id: winner[0].id,
-          name: winner[0].name,
-          wins: 1,
+          id: currentPlayers[0].id,
+          name: currentPlayers[0].name,
+          wins: 0,
         },
         {
-          id: looser[0].id,
-          name: looser[0].name,
+          id: currentPlayers[1].id,
+          name: currentPlayers[1].name,
           wins: 0,
         },
       ],
     }
 
+    newMatchItem.players[currentWinnerIndex] = {
+      ...newMatchItem.players[currentWinnerIndex],
+      wins: 1,
+    }
+
     matchesHistory.push(newMatchItem)
+
+    const winner = currentPlayers.filter(e => e.id === id)
+    const looser = currentPlayers.filter(e => e.id !== id)
 
     const match = matches.filter(e => e.matchId === `${winner[0].id}-${looser[0].id}` || e.matchId === `${looser[0].id}-${winner[0].id}`)
 

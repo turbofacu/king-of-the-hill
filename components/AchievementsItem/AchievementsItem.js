@@ -48,8 +48,10 @@ export default class AchievementsItem extends Component {
             color: white;
             display: flex;
             align-items: flex-start;
-            width: 50%;
-            flex-basis: 50%;
+            @media(min-width: 601px) {
+              width: 50%;
+              flex-basis: 50%;
+            }
             &-title, &-text, &-value {
               margin-right: $gutter;
             }

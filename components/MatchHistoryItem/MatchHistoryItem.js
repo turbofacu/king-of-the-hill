@@ -5,21 +5,32 @@ export default class MatchHistoryItem extends Component {
   static propTypes = {
     players: PropTypes.arrayOf(PropTypes.object),
     winnerClass: PropTypes.string,
+    trim: PropTypes.bool,
   }
 
   static defaultProps = {
     players: [],
     winnerClass: '',
+    trim: false,
   }
 
   render() {
-    const { players, winnerClass } = this.props
+    const { players, trim, winnerClass } = this.props
 
     return (
       <div className={`match-history-item ${winnerClass}`}>
         {players.map(el => (
           <div className="match-history-item-player">
-            <span>{ el.name }</span><span>{ el.wins }</span>
+            {(trim)
+              ?
+                <div className="match-history-item-player-flex">
+                  <span>{ el.name.substring(1, 4) }</span><span>{ el.wins }</span>
+                </div>
+              :
+                <div className="match-history-item-player-flex">
+                  <span>{ el.name }</span><span>{ el.wins }</span>
+                </div>
+            }
           </div>
         ))}
         <style jsx>{`
@@ -31,10 +42,16 @@ export default class MatchHistoryItem extends Component {
             display: flex;
             &-player {
               display: flex;
+              &-flex {
+                display: flex;
+              }
               span {
                 display: block;
                 margin: 0 5px;
               }
+            }
+            &.winner-reverse, &.winner-standard {
+              margin-bottom: $gutter;
             }
             &.winner-standard {
               .match-history-item-player {
@@ -75,6 +92,16 @@ export default class MatchHistoryItem extends Component {
                     &:first-child {
                       display: none;
                     }
+                  }
+                }
+              }
+            }
+            &.matches-history {
+              .match-history-item-player {
+                &:last-child {
+                  &:before {
+                    content: '-';
+                    margin: 0 5px;
                   }
                 }
               }

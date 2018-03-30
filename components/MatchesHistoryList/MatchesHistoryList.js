@@ -23,7 +23,7 @@ export default class MatchesHistoryList extends Component {
             <div className="matches-history-item-wrapper standard-list-item">
               <div className="matches-history-item-flex">
                 <span className="matches-history-item-number">{i + 1}. </span>
-                <MatchHistoryItem players={e.players} />
+                <MatchHistoryItem players={e.players} trim winnerClass="matches-history" />
               </div>
               <span className="matches-history-item-time"><img className="matches-history-item-time-icon" src="./static/images/clock.png" alt="clock icon" />{matchTime}</span>
             </div>

@@ -18,10 +18,10 @@ export default class MatchesHistoryStats extends Component {
 
     return (
       <div className="matches-history-stats air-1">
-        <div className="matches-history-stats-item">Game Start: {gameStats.matchStart}</div>
-        <div className="matches-history-stats-item">Total Matches: {gameStats.totalMatches}</div>
-        <div className="matches-history-stats-item">P1 Wins: {gameStats.winnerPosition.playerOne}</div>
-        <div className="matches-history-stats-item">P2 Wins: {gameStats.winnerPosition.playerTwo}</div>
+        <div className="matches-history-stats-item"><span>Game Start</span><span>{gameStats.matchStart}</span></div>
+        <div className="matches-history-stats-item"><span>Total Matches</span> <span>{gameStats.totalMatches}</span></div>
+        <div className="matches-history-stats-item"><span>P1 Wins</span> <span>{gameStats.winnerPosition.playerOne}</span></div>
+        <div className="matches-history-stats-item"><span>P2 Wins</span> <span>{gameStats.winnerPosition.playerTwo}</span></div>
         <style jsx>{`
 
           @import './static/scss/variables';
@@ -36,6 +36,14 @@ export default class MatchesHistoryStats extends Component {
             &-item {
               width: 50%;
               margin-bottom: $gutter;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              > span {
+                &:first-child {
+                  margin-bottom: 10px;
+                }
+              }
             }
           }
 

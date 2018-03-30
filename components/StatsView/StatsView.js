@@ -38,23 +38,23 @@ export default class StatsView extends PureComponent {
     return (
       <div className="standard-flex">
         <h2 className="standard-subtitle air-3">Game Stats</h2>
-        <div className="air-4">
+        <div className="air-3">
           <PlayersList players={players} openPlayerStats="true" className="stats-list" matches={matches} />
         </div>
-        <div className="air-4">
+        <div className="text-center air-4">
+          <Button text="Back to Match" className="crimson" changeView={changeView} />
+        </div>
+        <div className="air-3">
           <h2 className="standard-subtitle air-3">Matches Stats</h2>
           <MatchesHistoryStats gameStats={gameStats} />
         </div>
-        <div className="air-4">
+        <div className="air-3">
           <h2 className="standard-subtitle air-3">Achievements</h2>
           <AchievementsList matches={matchesHistory} players={players} />
         </div>
         <div className="air-4">
           <h2 className="standard-subtitle air-3">Matches History</h2>
           <MatchesHistoryList matches={matchesHistory} />
-        </div>
-        <div className="text-center">
-          <Button text="Back to Match" className="crimson" changeView={changeView} />
         </div>
       </div>
     )
