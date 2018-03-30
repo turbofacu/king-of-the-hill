@@ -338,7 +338,7 @@ export default class extends Component {
     if (winner[0].stats.streak >= players.length - 1) {
       winner[0].crown = Math.floor(winner[0].stats.streak / (players.length - 1))
       if (winner[0].crown > winner[0].stats.totalCrowns) {
-        winner[0].stats.totalCrowns += winner[0].crown
+        winner[0].stats.totalCrowns += 1
         do {
           newCrownSrc = Math.floor(Math.random() * 3) + 1
         } while (newCrownSrc === crownSrc)
