@@ -24,7 +24,7 @@ export default class MatchHistoryItem extends Component {
             {(trim)
               ?
                 <div className="match-history-item-player-flex">
-                  <span>{ el.name.substring(1, 4) }</span><span>{ el.wins }</span>
+                  <span>{ el.name.substring(0, 3) }</span><span>{ el.wins }</span>
                 </div>
               :
                 <div className="match-history-item-player-flex">
@@ -98,6 +98,7 @@ export default class MatchHistoryItem extends Component {
             }
             &.matches-history {
               .match-history-item-player {
+                text-transform: uppercase;
                 &:last-child {
                   &:before {
                     content: '-';
