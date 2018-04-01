@@ -30,9 +30,9 @@ export default class AchievementsItem extends Component {
             <span className="achievements-item-badge-content">{badge}</span>
           </span>
         </span>
-        <div>
+        <div className="achievements-item-content">
           <div className="achievements-item-title air-1">{title}</div>
-          <div className="achivements-item-text air-1"><strong>{name}</strong></div>
+          <div className="achievements-item-text air-1"><strong>{name}</strong></div>
           {time &&
             <div className="achievements-item-value">
               Time: {time}
@@ -48,23 +48,53 @@ export default class AchievementsItem extends Component {
             color: white;
             display: flex;
             align-items: flex-start;
-            @media(min-width: 601px) {
+            @media(max-width: $mobileMax) {
+              margin-bottom: #{$gutter * 2};
+            }
+            @media(min-width: $tabletMin) {
               width: 50%;
               flex-basis: 50%;
             }
+            @media(max-width: $mobileMax) {
+              flex-direction: column;
+              align-items: center;
+            }
+            &-content {
+              @media(min-width: $tabletMin) {
+                width: 70%;
+              }
+              @media(max-width: $mobileMax) {
+                text-align: center;
+              }
+            }
             &-title, &-text, &-value {
-              margin-right: $gutter;
+              @media(min-width: $tabletMin) {
+                margin-right: $gutter;
+              }
             }
             &-title {
               font-size: 18px;
               text-transform: uppercase;
               text-shadow: 1px 1px darken(white, 75%), 2px 2px darken(white, 75%), 3px 3px darken(white, 75%);
             }
+            &-text {
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              overflow: hidden;
+              @media(min-width: $tabletMin) {
+                max-width: 60%;
+              }
+            }
             &-badge {
               min-height: 50px;
               width: 35px;
-              margin-right: #{$gutter * 2};
               position: relative;
+              @media(min-width: $tabletMin) {
+                margin-right: #{$gutter * 2};
+              }
+              @media(max-width: $mobileMax) {
+                margin-bottom: $gutter;
+              }
               &-coin {
                 line-height: 35px;
                 width: 35px;
@@ -141,8 +171,8 @@ export default class AchievementsItem extends Component {
                 }
                 &.silver {
                   &:before, &:after {
-                    border: lighten($blue, 7%) solid 1px;
-                    background-color: $blue;
+                    border: lighten(blue, 7%) solid 1px;
+                    background-color: blue;
                   }
                 }
                 &.bronze {

@@ -141,7 +141,7 @@ export default class AchievementsList extends Component {
           .achievements-list {
             display: flex;
             flex-wrap: wrap;
-            @media(max-width: 600px) {
+            @media(max-width: $mobileMax) {
               flex-direction: column;
               justify-content: center;
               align-items: center;

@@ -39,7 +39,7 @@ export default class Match extends PureComponent {
     const { currentPlayers, updatePlayers } = this.props
     return (
       <div className="standard-flex">
-        <div className="match-wrapper air-4">
+        <div className="match-wrapper air-2">
           <MatchItem
             name={currentPlayers[0].name}
             id={currentPlayers[0].id}
@@ -61,6 +61,9 @@ export default class Match extends PureComponent {
           />
         </div>
         <style jsx>{`
+
+          @import './static/scss/variables';
+
           .match {
             &-wrapper {
               display: flex;
@@ -92,7 +95,7 @@ export default class Match extends PureComponent {
               display: flex;
               align-items: center;
               justify-content: center;
-              @media( max-width: 768px ) {
+              @media(max-width: $mobileMax) {
                 font-size: 18px;
                 height: 120px;
               }

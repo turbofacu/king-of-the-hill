@@ -99,34 +99,37 @@ export default class extends Component {
         return
       }
     }
-    if (inputValue.length < 3) {
-      errorText = 'Name should contain at least 3 characters'
+    if (inputValue === '') {
+      errorText = `Name can't be empty`
       this.setState({ inputError: errorText })
       return
     }
-    if (inputValue !== '') {
-      players.push({
-        name: playerName,
-        id: playerNewId,
-        crown: 0,
-        gate: false,
-        stats: {
-          wins: 0,
-          lost: 0,
-          streak: 0,
-          bestStreak: 0,
-          totalGames: 0,
-          totalCrowns: 0,
-          timesGate: 0,
-        },
-      })
-      this.setState({
-        players,
-        playerId: playerId += 1,
-        inputValue: '',
-        inputError: errorText,
-      })
+    if (inputValue.length < 3) {
+      errorText = 'At least 3 characters'
+      this.setState({ inputError: errorText })
+      return
     }
+    players.push({
+      name: playerName,
+      id: playerNewId,
+      crown: 0,
+      gate: false,
+      stats: {
+        wins: 0,
+        lost: 0,
+        streak: 0,
+        bestStreak: 0,
+        totalGames: 0,
+        totalCrowns: 0,
+        timesGate: 0,
+      },
+    })
+    this.setState({
+      players,
+      playerId: playerId += 1,
+      inputValue: '',
+      inputError: errorText,
+    })
   }
 
   removePlayer = (id) => {
@@ -414,7 +417,7 @@ export default class extends Component {
       <div>
         <Head>
           <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-          <link key="manifest" rel="manifest" href="./static/manifest.json" />
+          <link key="manifest" rel="manifest" href="/static/manifest.json" />
           <link rel="stylesheet" href="./static/css/fonts.css" />
         </Head>
         {/* <Help /> */}
@@ -480,7 +483,7 @@ export default class extends Component {
             margin: 0 auto;
             padding: 0 0 #{$gutter * 3};
             box-sizing: border-box;
-            @media( max-width: 768px ) {
+            @media(max-width: 768px) {
               padding: 0 10px #{$gutter * 3};
             }
           }
@@ -509,7 +512,7 @@ export default class extends Component {
             text-align: center;
             text-transform: uppercase;
             text-shadow: 1px 1px darken(white, 75%), 2px 2px darken(white, 75%), 3px 3px darken(white, 75%), 4px 4px darken(white, 75%), 5px 5px darken(white, 75%);
-            @media( max-width: 768px ) {
+            @media(max-width: 768px) {
               font-size: 24px;
             }
           }
@@ -522,13 +525,13 @@ export default class extends Component {
               text-align: center;
               text-transform: uppercase;
               text-shadow: 1px 1px darken(white, 75%), 2px 2px darken(white, 75%), 3px 3px darken(white, 75%), 4px 4px darken(white, 75%), 5px 5px darken(white, 75%);
-              @media( max-width: 768px ) {
+              @media(max-width: 768px) {
                 font-size: 24px;
               }
             }
             &-semititle {
               font-size: #{$gutter * 2};
-              @media( max-width: 768px ) {
+              @media(max-width: 768px) {
                 font-size: 18px;
               }
             }
@@ -547,53 +550,53 @@ export default class extends Component {
           $player-colors : (
             0: (
               color: $cyan,
-              percentage: 25%,
-              border: 20%,
+              percentage: 15%,
+              border: 10%,
             ),
             1: (
-              color: $lila,
-              percentage: 20%,
-              border: 15%,
+              color: $pink,
+              percentage: 10%,
+              border: 5%,
             ),
             2: (
-              color: $crimson,
+              color: $yellow,
               percentage: 15%,
               border: 10%,
             ),
             3: (
-              color: $yellow,
-              percentage: 25%,
-              border: 20%,
+              color: $lila,
+              percentage: 10%,
+              border: 5%,
             ),
             4: (
-              color: $pink,
-              percentage: 15%,
-              border: 10%,
+              color: $darkPink,
+              percentage: 10%,
+              border: 5%,
             ),
             5: (
-              color: $magenta,
-              percentage: 15%,
-              border: 10%,
+              color: $silver,
+              percentage: 10%,
+              border: 5%,
             ),
             6: (
-              color: $lime,
-              percentage: 30%,
-              border: 25%,
-            ),
-            7: (
               color: $orange,
               percentage: 15%,
               border: 10%,
             ),
-            8: (
-              color: $aquamarine,
+            7: (
+              color: $magenta,
               percentage: 15%,
               border: 10%,
             ),
+            8: (
+              color: $sky,
+              percentage: 7%,
+              border: 3%,
+            ),
             9: (
-              color: $green,
-              percentage: 15%,
-              border: 10%,
+              color: gold,
+              percentage: 7%,
+              border: 3%,
             ),
           );
 
@@ -601,6 +604,9 @@ export default class extends Component {
             border-top: 0 !important;
             border-left: 0 !important;
             &.big {
+              background-color: $silver;
+              border: 2px solid darken($silver, 5%);
+              @include itemBorderBig(darken($silver, 10%));
               @each $player, $style in $player-colors {
                 &.color-#{$player} {
                   background-color: map-get($style, color);
@@ -610,6 +616,9 @@ export default class extends Component {
               }
             }
             &.small {
+              background-color: $silver;
+              border: 2px solid darken($silver, 5%);
+              @include itemBorderSmall(darken($silver, 10%));
               @each $player, $style in $player-colors {
                 &.color-#{$player} {
                   background-color: map-get($style, color);
@@ -620,6 +629,26 @@ export default class extends Component {
             }
             &.no-background {
               background-color: transparent !important;
+            }
+          }
+
+          .red-button {
+            color: white;
+            text-shadow: 1px 1px darken(white, 75%), 2px 2px darken(white, 75%), 3px 3px darken(white, 75%);
+            text-align: center;
+            width: 45px;
+            height: 45px;
+            background-color: $crimson;
+            border: 2px solid darken($crimson, 10%);
+            border-top: 0;
+            border-left: 0;
+            @include itemBorderSmall(darken($crimson, 15%));
+            cursor: pointer;
+            &:hover {
+              transform: scale(1.1);
+            }
+            &:active {
+              transform: scale(0.9);
             }
           }
 

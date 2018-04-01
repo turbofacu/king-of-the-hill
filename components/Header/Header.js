@@ -52,8 +52,8 @@ export default class Button extends PureComponent {
               font-size: 68px;
               word-spacing: -18px;
               padding-top: #{$gutter * 4};
-              @media(max-width: 768px) {
-                font-size: 44px;
+              @media(max-width: $mobileMax) {
+                font-size: 40px;
               }
             }
             &-crown {
@@ -63,7 +63,7 @@ export default class Button extends PureComponent {
               left: -15px;
               transition: all 500ms ease-out;
               transform: translate3d(0, -50px, 0);
-              @media(max-width: 768px) {
+              @media(max-width: $mobileMax) {
                 height: 32px;
                 top: -25px;
                 left: -10px;
@@ -74,8 +74,8 @@ export default class Button extends PureComponent {
               &-wrapper {
                 margin-bottom: $gutter;
                 font-size: 80px;
-                @media(max-width: 768px) {
-                  font-size: 54px;
+                @media(max-width: $mobileMax) {
+                  font-size: 50px;
                 }
               }
             }

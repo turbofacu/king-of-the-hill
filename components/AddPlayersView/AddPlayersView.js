@@ -65,7 +65,7 @@ export default class AddPlayersView extends PureComponent {
         }
         {players[3] && // If four players exists, show the changeView button
           <div className="text-center">
-            <Button text="Start Match" className="magenta" changeView={changeView} />
+            <Button text="Start Match" className="green" changeView={changeView} />
           </div>
         }
         <style jsx global>{`
@@ -87,7 +87,7 @@ export default class AddPlayersView extends PureComponent {
               color: $crimson;
               margin-top: #{$gutter * 2};
               padding-left: 8px;
-              @media(max-width: 767px) {
+              @media(max-width: $mobileMax) {
                 font-size: 12px;
               }
             }

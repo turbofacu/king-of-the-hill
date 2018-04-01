@@ -14,10 +14,10 @@ export default class Button extends Component {
 
     return (
       <div className="help-wrapper">
-        <div className="help-button" onClick={this.toogleModal} role="button" tabIndex={0}>?</div>
+        <div className="help-button red-button" onClick={this.toogleModal} role="button" tabIndex={0}>?</div>
         {showModal &&
           <div className="help-modal">
-            <span className="help-cross" onClick={this.toogleModal} role="button" tabIndex={0}>x</span>
+            <span className="help-cross red-button" onClick={this.toogleModal} role="button" tabIndex={0}>x</span>
             <div className="help-modal-content">
               <h2 className="air-3">Welcome to KING OF THE HILL!</h2>
               <p className="air-2">This is an application for you to take track of your wins and looses in a king of the hill type of game where the winner keeps playing.</p>
@@ -37,21 +37,12 @@ export default class Button extends Component {
 
           .help {
             &-button, &-cross {
-              color: white;
-              text-shadow: 1px 1px darken(white, 75%), 2px 2px darken(white, 75%), 3px 3px darken(white, 75%);
-              text-align: center;
               line-height: 34px;
               width: 34px;
               height: 34px;
               position: fixed;
               top: $gutter;
               right: $gutter;
-              background-color: $crimson;
-              border: 2px solid darken($crimson, 10%);
-              border-top: 0;
-              border-left: 0;
-              @include itemBorderSmall(darken($crimson, 15%));
-              cursor: pointer;
               &:hover {
                 transform: scale(1.1);
               }

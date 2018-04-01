@@ -23,7 +23,7 @@ export default class MatchesHistoryList extends Component {
             <div className="matches-history-item-wrapper standard-list-item">
               <div className="matches-history-item-flex">
                 <span className="matches-history-item-number">{i + 1}. </span>
-                <MatchHistoryItem players={e.players} trim winnerClass="matches-history" />
+                <MatchHistoryItem players={e.players} winnerClass="matches-history" />
               </div>
               <span className="matches-history-item-time"><img className="matches-history-item-time-icon" src="./static/images/clock.png" alt="clock icon" />{matchTime}</span>
             </div>
@@ -42,10 +42,17 @@ export default class MatchesHistoryList extends Component {
             &-time {
               display: flex;
               align-items: center;
+              @media(max-width: $mobileXsMax) {
+                font-size: 14px;
+              }
               &-icon {
                 height: 25px;
                 width: auto;
                 margin-right: $gutter;
+                @media(max-width: $mobileXsMax) {
+                  height: 15px;
+                  margin-right: #{$gutter / 2};
+                }
               }
             }
             &-number {
@@ -61,14 +68,26 @@ export default class MatchesHistoryList extends Component {
             border-left: 0 !important;
             @for $i from 1 to 50 {
               &:nth-child(#{$i}) {
-                @include itemBorderSmall(rgba(98, ($i * 5), 170, 1));
-                border: 2px solid lighten(rgba(98, ($i * 5), 170, 1), 5%);
+                @include itemBorderSmall(rgba(0, ($i * 5), 170, 1));
+                border: 2px solid lighten(rgba(0, ($i * 5), 170, 1), 5%);
               }
             }
-            @for $i from 50 to 101 {
+            @for $i from 50 to 100 {
               &:nth-child(#{$i}) {
-                @include itemBorderSmall(rgba((($i - 49) * 5), 250, 170, 1));
-                border: 2px solid lighten(rgba((($i - 49) * 5), 250, 170, 1), 5%);
+                @include itemBorderSmall(rgba(0, (255 - ($i - 49) * 5), 170, 1));
+                border: 2px solid lighten(rgba(0, (255 - ($i - 49) * 5), 170, 1), 5%);
+              }
+            }
+            @for $i from 100 to 150 {
+              &:nth-child(#{$i}) {
+                @include itemBorderSmall(rgba(0, (($i - 99) * 5), 170, 1));
+                border: 2px solid lighten(rgba(0, (($i - 99) * 5), 170, 1), 5%);
+              }
+            }
+            @for $i from 150 to 200 {
+              &:nth-child(#{$i}) {
+                @include itemBorderSmall(rgba(0, (255 - ($i - 149) * 5), 170, 1));
+                border: 2px solid lighten(rgba(0, (255 - ($i - 149) * 5), 170, 1), 5%);
               }
             }
           }

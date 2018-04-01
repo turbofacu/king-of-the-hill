@@ -40,7 +40,7 @@ export default class MatchItem extends PureComponent {
     }
     return (
       <div className="match-item-status match-item-crown-wrapper">
-        { crowns.map((e, index) => <img className="match-item-status-icon match-item-crown" src={`./static/images/crown-${index}.png`} alt="crown" />) }
+        { crowns.map((e, index) => <img className="match-item-status-icon match-item-crown" src={`./static/images/crown-${index}.png`} alt="crown" key={`${index}-crown`} />) }
       </div>
     )
   }
@@ -90,7 +90,7 @@ export default class MatchItem extends PureComponent {
               border: 0;
               transition: transform 25ms linear;
               transform-origin: bottom right;
-              @media( max-width: 768px ) {
+              @media(max-width: $mobileMax) {
                 font-size: 20px;
                 height: 120px;
               }
@@ -145,7 +145,7 @@ export default class MatchItem extends PureComponent {
                 height: 40px;
                 width: auto;
                 margin-left: #{$gutter / 2};
-                @media( max-width: 768px ) {
+                @media(max-width: $mobileMax) {
                   height: 20px;
                   width: auto;
                 }

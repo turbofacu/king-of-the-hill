@@ -55,7 +55,7 @@ export default class PlayerItem extends Component {
     } = this.props
 
     return (
-      <li className={`player-item item-with-color small gate-${gate} color-${id.substring(0, 1)} ${className}`}>
+      <li className={`player-item item-with-color small gate-${gate} color-${id.substr(0, id.indexOf('-'))} ${className}`}>
         <div className={cn({ 'stats-open': openStats })}>
           <div className="player-item-flex">
             <span className="player-item-name">
@@ -80,7 +80,7 @@ export default class PlayerItem extends Component {
               }
               {className === 'stats-item' &&
                 <div className="player-item-arrow" onClick={this.openStats} role="button" tabIndex={0}>
-                  <img src="./static/images/arrow.png" alt="arrow" />
+                  <img src="./static/images/arrow-down.png" alt="arrow" />
                 </div>
               }
             </div>
@@ -91,7 +91,7 @@ export default class PlayerItem extends Component {
               <div>
                 <p className="player-stats-big-title air-1">Stats</p>
                 <ul className="player-stats-big-list air-2">
-                  <li className="player-item-big-item air-1">Played: {stats.totalGames} </li>
+                  <li className="player-stats-big-item air-1">Played: {stats.totalGames} </li>
                   <li className="player-stats-big-item air-1">Crowns: {stats.totalCrowns}</li>
                   <li className="player-stats-big-item air-1">Won: {stats.wins} </li>
                   <li className="player-stats-big-item air-1">Lost: {stats.lost}</li>
@@ -136,7 +136,6 @@ export default class PlayerItem extends Component {
             padding: 12px 16px;
             list-style: none;
             position: relative;
-            border: 0;
             &:hover {
               .player-item-cross {
                 opacity: 1;
@@ -153,7 +152,8 @@ export default class PlayerItem extends Component {
             .stats-open {
               .player-item {
                 &-name {
-                  font-size: #{$gutter * 3};
+                  font-size: #{$gutter * 2.5};
+                  max-width: 80%;
                 }
                 &-stats-list {
                   display: none;
@@ -169,6 +169,12 @@ export default class PlayerItem extends Component {
             &-flex {
               display: flex;
               justify-content: space-between;
+            }
+            &-name {
+             white-space: nowrap;
+             max-width: 60%;
+             text-overflow: ellipsis;
+             overflow: hidden;
             }
             &-status {
               display: flex;
@@ -196,8 +202,8 @@ export default class PlayerItem extends Component {
                 outline: none;
               }
               > img {
-                width: 22px;
-                height: 22px;
+                width: 20px;
+                height: auto;
               }
             }
             &-cross {
@@ -211,7 +217,7 @@ export default class PlayerItem extends Component {
               opacity: 0;
               cursor: pointer;
               transition: transform 50ms linear;
-              @media(max-width: 768px) {
+              @media(max-width: $mobileMax) {
                 opacity: 1;
               }
               &:hover {
@@ -223,6 +229,16 @@ export default class PlayerItem extends Component {
             }
             .player-stats-big {
               display: none;
+              &-title {
+                @media(max-width: $mobileXsMax) {
+                  font-size: 18px;
+                }
+              }
+              &-item {
+                @media(max-width: $mobileXsMax) {
+                  font-size: 14px;
+                }
+              }
             }
           }
 

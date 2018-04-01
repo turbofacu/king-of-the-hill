@@ -41,8 +41,8 @@ export default class StatsView extends PureComponent {
         <div className="air-3">
           <PlayersList players={players} openPlayerStats="true" className="stats-list" matches={matches} />
         </div>
-        <div className="text-center air-4">
-          <Button text="Back to Match" className="crimson" changeView={changeView} />
+        <div className="text-center air-5">
+          <Button text="Back to Match" className="green" changeView={changeView} />
         </div>
         <div className="air-3">
           <h2 className="standard-subtitle air-3">Matches Stats</h2>

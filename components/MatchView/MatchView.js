@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 
 import Button from '../Button/Button'
+import RewindButton from '../RewindButton/RewindButton'
 import Match from '../Match/Match'
 import PlayersList from '../PlayersList/PlayersList'
 
@@ -39,6 +40,9 @@ export default class MatchView extends PureComponent {
             updatePlayers={updatePlayers}
             matches={matches}
           />
+          {/* {matches[0] &&
+            <RewindButton />
+          } */}
           <h2 className="standard-semititle air-2">Waiting Players</h2>
           <PlayersList players={waitingPlayers} />
         </div>
@@ -47,6 +51,16 @@ export default class MatchView extends PureComponent {
             <Button text="Game Stats" className="orange" changeView={changeView} />
           </div>
         }
+        <style jsx>{`
+
+          @import './static/scss/variables';
+          @import './static/scss/mixins';
+
+          .standard-semititle {
+            margin-top: #{$gutter * 2};
+          }
+        `}
+        </style>
       </div>
     )
   }

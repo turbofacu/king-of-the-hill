@@ -51,8 +51,8 @@ export default class Button extends PureComponent {
   }
 
   handleEnter = (e) => {
-    const { inputValue } = this.props
-    if (inputValue) {
+    const { addPlayer } = this.props
+    if (addPlayer) {
       if (e.keyCode === 13) {
         this.handleClick()
         this.setState({ animate: 'animate' })
@@ -84,6 +84,7 @@ export default class Button extends PureComponent {
             text-align: center;
             background-color: $green;
             @include itemBorderBig(darken($green, 8%));
+            border: 2px solid darken($green, 3%);
             padding: $gutter #{$gutter * 5};
             display: inline-block;
             cursor: pointer;
@@ -92,6 +93,9 @@ export default class Button extends PureComponent {
             transform-origin: bottom right;
             border-top: 0 !important;
             border-left: 0 !important;
+            @media(max-width: $mobileXsMax) {
+              font-size: 18px;
+            }
             &:focus {
               outline: none;
             }
@@ -100,16 +104,6 @@ export default class Button extends PureComponent {
             }
             &.animate, &:active {
               transform: scale(0.9);
-            }
-            &.magenta {
-              background-color: $magenta;
-              @include itemBorderBig(darken($magenta, 8%));
-              border: 2px solid darken($magenta, 3%);
-            }
-            &.orange {
-              background-color: $orange;
-              @include itemBorderBig(darken($orange, 8%));
-              border: 2px solid darken($orange, 3%);
             }
             &.crimson {
               background-color: $crimson;

@@ -5,19 +5,16 @@ export default class MatchHistoryItem extends Component {
   static propTypes = {
     players: PropTypes.arrayOf(PropTypes.object),
     winnerClass: PropTypes.string,
-    trim: PropTypes.bool,
   }
 
   static defaultProps = {
     players: [],
     winnerClass: '',
-    trim: false,
   }
 
   render() {
     const {
       players,
-      trim,
       winnerClass,
     } = this.props
 
@@ -25,22 +22,15 @@ export default class MatchHistoryItem extends Component {
       <div className={`match-history-item ${winnerClass}`}>
         {players.map(e => (
           <div className="match-history-item-player">
-            {(trim)
-              ?
-                <div className="match-history-item-player-flex">
-                  {e.gate &&
-                    <img className="match-history-item-gate" src="./static/images/skull-white.png" alt="skull" />
-                  }
-                  {e.crown &&
-                    <img className="match-history-item-crown" src="./static/images/crown-0.png" alt="crown" />
-                  }
-                  <span>{ e.name.substring(0, 3) }</span><span>{ e.wins }</span>
-                </div>
-              :
-                <div className="match-history-item-player-flex">
-                  <span>{ e.name }</span><span>{ e.wins }</span>
-                </div>
-            }
+            <div className="match-history-item-player-flex">
+              {e.gate &&
+                <img className="match-history-item-gate" src="./static/images/skull-white.png" alt="skull" />
+              }
+              {e.crown &&
+                <img className="match-history-item-crown" src="./static/images/crown-0.png" alt="crown" />
+              }
+              <span>{ e.name.substring(0, 3) }</span><span>{ e.wins }</span>
+            </div>
           </div>
         ))}
         <style jsx>{`
@@ -50,8 +40,12 @@ export default class MatchHistoryItem extends Component {
 
           .match-history-item {
             display: flex;
+            @media(max-width: $mobileXsMax) {
+              font-size: 14px;
+            }
             &-player {
               display: flex;
+              text-transform: uppercase;
               &-flex {
                 display: flex;
                 align-items: center;
@@ -63,8 +57,15 @@ export default class MatchHistoryItem extends Component {
             }
             &-gate, &-crown {
               height: 20px;
-              width: 20px;
+              width: auto;
               margin-right: 5px;
+              @media(max-width: $mobileXsMax) {
+                height: 15px;
+                width: auto;
+              }
+            }
+            &:not(.matches-history) {
+              margin-left: -5px;
             }
             &.winner-reverse, &.winner-standard {
               margin-bottom: $gutter;
@@ -114,7 +115,10 @@ export default class MatchHistoryItem extends Component {
             }
             &.matches-history {
               .match-history-item-player {
-                text-transform: uppercase;
+                span {
+                  display: block;
+                  margin: 0 5px;
+                }
                 &:last-child {
                   &:before {
                     content: '-';

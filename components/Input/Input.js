@@ -75,7 +75,7 @@ export default class Input extends PureComponent {
               stroke-dashoffset: 0;
               animation: dash 2s linear infinite;
               pointer-events: none;
-              @media(max-width: 768px) {
+              @media(max-width: $mobileMax) {
                 transform: scale(1.025, 1); //HACK
               }
             }
@@ -95,6 +95,9 @@ export default class Input extends PureComponent {
             appearance: none;
             -moz-appearance: none;
             -webkit-appearance: none;
+            @media(max-width: $mobileXsMax) {
+              font-size: 18px;
+            }
             &:focus {
               color: $black;
               outline: none;
