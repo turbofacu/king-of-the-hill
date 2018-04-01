@@ -13,6 +13,7 @@ export default class AddPlayersView extends PureComponent {
     returnPlayerValue: PropTypes.func,
     players: PropTypes.arrayOf(PropTypes.object),
     inputValue: PropTypes.string,
+    inputError: PropTypes.string,
   }
 
   static defaultProps = {
@@ -22,6 +23,7 @@ export default class AddPlayersView extends PureComponent {
     returnPlayerValue: () => {},
     players: [],
     inputValue: '',
+    inputError: '',
   }
 
   focusInput = () => {
@@ -36,16 +38,22 @@ export default class AddPlayersView extends PureComponent {
       returnPlayerValue,
       players,
       inputValue,
+      inputError,
     } = this.props
     return (
       <div className="standard-flex">
-        <div className="add-players-input-wrapper standard-flex air-4">
-          <Input
-            inputValue={inputValue}
-            getValue={returnPlayerValue}
-            ref={ch => this.child = ch}
-          />
-          <Button addPlayer={addPlayer} text="Add" inputValue={inputValue} focusInput={this.focusInput} />
+        <div className="standard-flex air-4">
+          <div className="add-players-input-wrapper standard-flex">
+            <Input
+              inputValue={inputValue}
+              getValue={returnPlayerValue}
+              ref={ch => this.child = ch}
+            />
+            <Button addPlayer={addPlayer} text="Add" inputValue={inputValue} focusInput={this.focusInput} />
+          </div>
+          {inputError !== '' &&
+            <p className="add-players-input-error">{inputError}</p>
+          }
         </div>
         {players[0] && // If a players exists, show PlayerList
           <div>
@@ -65,13 +73,23 @@ export default class AddPlayersView extends PureComponent {
           @import './static/scss/variables';
           @import './static/scss/mixins';
 
-          .add-players-input-wrapper {
-            align-items: center;
-            flex-direction: initial !important;
-            .button {
-              margin-left: #{$gutter * 2};
-              padding: 18px #{$gutter * 2};
-              box-sizing: border-box;
+          .add-players-input {
+            &-wrapper {
+              align-items: center;
+              flex-direction: initial !important;
+              .button {
+                margin-left: #{$gutter * 2};
+                padding: 18px #{$gutter * 2};
+                box-sizing: border-box;
+              }
+            }
+            &-error {
+              color: $crimson;
+              margin-top: #{$gutter * 2};
+              padding-left: 8px;
+              @media(max-width: 767px) {
+                font-size: 12px;
+              }
             }
           }
 

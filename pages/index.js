@@ -5,6 +5,7 @@ import { getPlayerIndex, getMatchIndex } from '../lib/functions'
 
 import SVGSprites from '../components/SVGSprites/SVGSprites'
 import Header from '../components/Header/Header'
+import Help from '../components/Help/Help'
 import AddPlayersView from '../components/AddPlayersView/AddPlayersView'
 import MatchView from '../components/MatchView/MatchView'
 import StatsView from '../components/StatsView/StatsView'
@@ -18,6 +19,7 @@ export default class extends Component {
     players: [],
     playerId: 0,
     inputValue: '',
+    inputError: '',
     currentPlayers: [],
     waitingPlayers: [],
     currentWinnerId: null,
@@ -89,6 +91,19 @@ export default class extends Component {
     let { playerId } = this.state
     const playerName = inputValue.replace(/\s+/g, '')
     const playerNewId = `${playerId}-${playerName.substring(0, 3)}`
+    let errorText = ''
+    for (let i = 0; i < players.length; i++) {
+      if (players[i].name === inputValue) {
+        errorText = 'Name already taken'
+        this.setState({ inputError: errorText })
+        return
+      }
+    }
+    if (inputValue.length < 3) {
+      errorText = 'Name should contain at least 3 characters'
+      this.setState({ inputError: errorText })
+      return
+    }
     if (inputValue !== '') {
       players.push({
         name: playerName,
@@ -105,7 +120,12 @@ export default class extends Component {
           timesGate: 0,
         },
       })
-      this.setState({ players, playerId: playerId += 1, inputValue: '' })
+      this.setState({
+        players,
+        playerId: playerId += 1,
+        inputValue: '',
+        inputError: errorText,
+      })
     }
   }
 
@@ -117,7 +137,7 @@ export default class extends Component {
   }
 
   returnPlayerValue = value => (
-    this.setState({ inputValue: value })
+    this.setState({ inputValue: value, inputError: '' })
   )
 
   updatePlayers = (id) => {
@@ -216,6 +236,8 @@ export default class extends Component {
       currentMatchTime,
     } = this.state
 
+    const winner = currentPlayers.filter(e => e.id === id)
+    const looser = currentPlayers.filter(e => e.id !== id)
     const currentWinnerIndex = getPlayerIndex(currentPlayers, id)
     const date = new Date()
     const time = Math.abs(date.getTime() - currentMatchTime.getTime()) / 1000;
@@ -241,10 +263,21 @@ export default class extends Component {
       wins: 1,
     }
 
-    matchesHistory.push(newMatchItem)
+    if (winner[0].gate) {
+      newMatchItem.players[currentWinnerIndex] = { // gate match
+        ...newMatchItem.players[currentWinnerIndex],
+        gate: true,
+      }
+    }
 
-    const winner = currentPlayers.filter(e => e.id === id)
-    const looser = currentPlayers.filter(e => e.id !== id)
+    if (looser[0].gate) {
+      newMatchItem.players[currentWinnerIndex] = { // crown match
+        ...newMatchItem.players[currentWinnerIndex],
+        crown: true,
+      }
+    }
+
+    matchesHistory.push(newMatchItem)
 
     const match = matches.filter(e => e.matchId === `${winner[0].id}-${looser[0].id}` || e.matchId === `${looser[0].id}-${winner[0].id}`)
 
@@ -370,6 +403,7 @@ export default class extends Component {
       currentPlayers,
       waitingPlayers,
       inputValue,
+      inputError,
       matches,
       matchesHistory,
       crownSrc,
@@ -380,8 +414,10 @@ export default class extends Component {
       <div>
         <Head>
           <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+          <link key="manifest" rel="manifest" href="./static/manifest.json" />
           <link rel="stylesheet" href="./static/css/fonts.css" />
         </Head>
+        {/* <Help /> */}
         <SVGSprites />
         {render &&
           <div className="container">
@@ -394,6 +430,7 @@ export default class extends Component {
                 returnPlayerValue={this.returnPlayerValue}
                 players={players}
                 inputValue={inputValue}
+                inputError={inputError}
               />
             }
             {showMatchView &&

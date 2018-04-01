@@ -1,0 +1,15 @@
+{
+  "short_name": "KOTH",
+  "name": "King Of The Hill",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#191919",
+  "background_color": "#191919",
+  "icons": [
+    {
+      "src": "/static/images/crown-0.png",
+      "type": "image/png",
+      "sizes": "176×144"
+    }
+  ]
+ }

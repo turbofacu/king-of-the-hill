@@ -15,20 +15,30 @@ export default class MatchHistoryItem extends Component {
   }
 
   render() {
-    const { players, trim, winnerClass } = this.props
+    const {
+      players,
+      trim,
+      winnerClass,
+    } = this.props
 
     return (
       <div className={`match-history-item ${winnerClass}`}>
-        {players.map(el => (
+        {players.map(e => (
           <div className="match-history-item-player">
             {(trim)
               ?
                 <div className="match-history-item-player-flex">
-                  <span>{ el.name.substring(0, 3) }</span><span>{ el.wins }</span>
+                  {e.gate &&
+                    <img className="match-history-item-gate" src="./static/images/skull-white.png" alt="skull" />
+                  }
+                  {e.crown &&
+                    <img className="match-history-item-crown" src="./static/images/crown-0.png" alt="crown" />
+                  }
+                  <span>{ e.name.substring(0, 3) }</span><span>{ e.wins }</span>
                 </div>
               :
                 <div className="match-history-item-player-flex">
-                  <span>{ el.name }</span><span>{ el.wins }</span>
+                  <span>{ e.name }</span><span>{ e.wins }</span>
                 </div>
             }
           </div>
@@ -44,11 +54,17 @@ export default class MatchHistoryItem extends Component {
               display: flex;
               &-flex {
                 display: flex;
+                align-items: center;
               }
               span {
                 display: block;
                 margin: 0 5px;
               }
+            }
+            &-gate, &-crown {
+              height: 20px;
+              width: 20px;
+              margin-right: 5px;
             }
             &.winner-reverse, &.winner-standard {
               margin-bottom: $gutter;
@@ -76,7 +92,7 @@ export default class MatchHistoryItem extends Component {
                 &:first-child {
                   display: flex;
                   order: 2;
-                  > span {
+                  span {
                     order: 2;
                     &:last-child {
                       order: 1;

@@ -15,13 +15,26 @@ export default class AchievementsList extends Component {
     players: [],
   }
 
-  achievementTime = (matches, wins, badge, title, medal) => {
+  achievementRekt = (matches, badge, title, medal) => {
     const matchesOrder = [...matches]
     matchesOrder.sort((a, b) => a.matchTime - b.matchTime)
     const match = matchesOrder[0]
     let matchTime = (match.matchTime / 60).toFixed(2)
     matchTime = matchTime.replace('.', ':')
-    const player = match.players.filter(e => e.wins === wins)
+    const player = match.players.filter(e => e.wins === 0)
+    const { name } = player[0]
+    return (
+      <AchievementsItem name={name} title={title} badge={badge} medal={medal} time={matchTime} />
+    )
+  }
+
+  achievementEndurance = (matches, badge, title, medal) => {
+    const matchesOrder = [...matches]
+    matchesOrder.sort((a, b) => b.matchTime - a.matchTime)
+    const match = matchesOrder[0]
+    let matchTime = (match.matchTime / 60).toFixed(2)
+    matchTime = matchTime.replace('.', ':')
+    const player = match.players.filter(e => e.wins === 1)
     const { name } = player[0]
     return (
       <AchievementsItem name={name} title={title} badge={badge} medal={medal} time={matchTime} />
@@ -118,8 +131,8 @@ export default class AchievementsList extends Component {
         {this.achievementStreak(players, 'S', 'Streak', 'gold')}
         {this.achievementGate(players, 'G', 'Gate Keeper', 'silver')}
         {this.achievementPlayed(players, 'P', 'Played', 'silver')}
-        {this.achievementTime(matches, 0, 'R', 'GOT REKT', 'bronze')}
-        {this.achievementTime(matches, 1, 'E', 'Endurance', 'silver')}
+        {this.achievementRekt(matches, 'R', 'GOT REKT', 'bronze')}
+        {this.achievementEndurance(matches, 'E', 'Endurance', 'silver')}
         <style jsx global>{`
 
           @import './static/scss/variables';

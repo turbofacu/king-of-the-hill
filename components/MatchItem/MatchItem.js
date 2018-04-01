@@ -8,6 +8,8 @@ export default class MatchItem extends PureComponent {
     id: PropTypes.string,
     crown: PropTypes.number,
     gate: PropTypes.bool,
+    wins: PropTypes.number,
+    className: PropTypes.string,
   }
 
   static defaultProps = {
@@ -16,6 +18,8 @@ export default class MatchItem extends PureComponent {
     id: null,
     crown: false,
     gate: false,
+    wins: 0,
+    className: '',
   }
 
   componentDidUpdate() {
@@ -47,9 +51,12 @@ export default class MatchItem extends PureComponent {
       crown,
       gate,
       id,
+      wins,
+      className,
     } = this.props
     return (
-      <div className={`match-item item-with-color big ${crown} gate-${gate} color-${id.substring(0, 1)}`} onClick={this.handleClick} role="button" tabIndex={0}>
+      <div className={`match-item item-with-color big ${crown} gate-${gate} color-${id.substring(0, 1)} ${className}`} onClick={this.handleClick} role="button" tabIndex={0}>
+        <span className="match-item-wins">{wins}</span>
         <span className="match-item-name">{name}</span>
         {gate &&
           <div className="match-item-status">
@@ -105,6 +112,21 @@ export default class MatchItem extends PureComponent {
                 overflow: hidden;
                 white-space: nowrap;
                 text-overflow: ellipsis;
+              }
+              &-wins {
+                font-size: 16px;
+                position: absolute;
+                top: $gutter;
+              }
+              &.left {
+                .match-item-wins {
+                  right: $gutter;
+                }
+              }
+              &.right {
+                .match-item-wins {
+                  left: $gutter;
+                }
               }
             }
           }

@@ -5,13 +5,34 @@ import MatchItem from '../MatchItem/MatchItem'
 
 export default class Match extends PureComponent {
   static propTypes = {
-    currentPlayers: PropTypes.arrayOf(PropTypes.object),
     updatePlayers: PropTypes.func,
+    currentPlayers: PropTypes.arrayOf(PropTypes.object),
+    matches: PropTypes.arrayOf(PropTypes.object),
   }
 
   static defaultProps = {
-    currentPlayers: [],
     updatePlayers: () => {},
+    currentPlayers: [],
+    matches: [],
+  }
+
+  findStats = (id) => {
+    const { matches, currentPlayers } = this.props
+    const pOneId = currentPlayers[0].id
+    const pTwoId = currentPlayers[1].id
+    const match = matches.filter(e => e.matchId === `${pOneId}-${pTwoId}` || e.matchId === `${pTwoId}-${pOneId}`)
+
+    if (!match[0]) {
+      return false
+    }
+
+    let playerWins = 0
+    for (let i = 0; i < match[0].players.length; i++) {
+      if (match[0].players[i].id === id) {
+        playerWins = match[0].players[i].wins
+      }
+    }
+    return playerWins
   }
 
   render() {
@@ -25,6 +46,8 @@ export default class Match extends PureComponent {
             crown={currentPlayers[0].crown}
             gate={currentPlayers[0].gate}
             updatePlayers={updatePlayers}
+            wins={this.findStats(currentPlayers[0].id)}
+            className="left"
           />
           <div className="match-divider">VS</div>
           <MatchItem
@@ -33,6 +56,8 @@ export default class Match extends PureComponent {
             crown={currentPlayers[1].crown}
             gate={currentPlayers[1].gate}
             updatePlayers={updatePlayers}
+            wins={this.findStats(currentPlayers[1].id)}
+            className="right"
           />
         </div>
         <style jsx>{`

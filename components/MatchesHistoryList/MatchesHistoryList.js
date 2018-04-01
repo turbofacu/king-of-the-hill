@@ -48,6 +48,9 @@ export default class MatchesHistoryList extends Component {
                 margin-right: $gutter;
               }
             }
+            &-number {
+              margin-right: 10px;
+            }
           }
 
           .matches-history-item-wrapper {

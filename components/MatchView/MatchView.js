@@ -37,6 +37,7 @@ export default class MatchView extends PureComponent {
           <Match
             currentPlayers={currentPlayers}
             updatePlayers={updatePlayers}
+            matches={matches}
           />
           <h2 className="standard-semititle air-2">Waiting Players</h2>
           <PlayersList players={waitingPlayers} />
