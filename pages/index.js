@@ -420,7 +420,7 @@ export default class extends Component {
           <link key="manifest" rel="manifest" href="/static/manifest.json" />
           <link rel="stylesheet" href="./static/css/fonts.css" />
         </Head>
-        {/* <Help /> */}
+        <Help />
         <SVGSprites />
         {render &&
           <div className="container">
