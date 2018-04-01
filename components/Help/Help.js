@@ -76,6 +76,7 @@ export default class Button extends Component {
               justify-content: center;
               &-content {
                 overflow: scroll;
+                -webkit-overflow-scrolling: touch; /* Lets it scroll lazy */
                 text-align: center;
                 line-height: 1.6em;
                 position: absolute;
