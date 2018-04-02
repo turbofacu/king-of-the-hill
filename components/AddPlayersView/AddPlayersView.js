@@ -87,9 +87,6 @@ export default class AddPlayersView extends PureComponent {
               color: $crimson;
               margin-top: #{$gutter * 2};
               padding-left: 8px;
-              @media(max-width: $mobileMax) {
-                font-size: 12px;
-              }
             }
           }
 

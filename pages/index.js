@@ -42,37 +42,40 @@ export default class extends Component {
     this.setState({ render: true })
   }
 
+  // Changes view to MatchView
   changeToMatchView = () => {
     const { players, gameStats } = this.state
-    const date = new Date()
+    const date = new Date() // Set MatchStart Date
     const dateHuman = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
     const newGameStats = {
       ...gameStats,
       matchStart: dateHuman,
     }
-    this.setState({
-      currentPlayers: players.filter((e, i) => i < 2),
+    this.setState({ // Separate CurrentPlayers from WaitingPlayers
+      currentPlayers: players.filter((e, i) => i <= 1),
       waitingPlayers: players.filter((e, i) => i > 1),
       currentGateId: players[players.length - 1].id,
     }, () => {
       this.startGate()
       this.setState({
         showPlayersView: false,
-        showMatchView: true,
+        showMatchView: true, // show MatchView
         currentMatchTime: date,
         gameStats: newGameStats,
       })
     })
   }
 
+  // Simple back toMatchView
   backToMatchView = () => {
     this.setState({ showPlayersView: false, showMatchView: true, showStatsView: false })
   }
 
+  // Changes view to StatsView
   changeToStatsView = () => {
     const { currentPlayers, waitingPlayers } = this.state
     const players = currentPlayers.concat(waitingPlayers)
-    players.sort((a, b) => {
+    players.sort((a, b) => { // Sort players, looking for crowns or wins
       if (b.stats.totalCrowns === a.stats.totalCrowns) {
         return b.stats.wins - a.stats.wins
       }
@@ -85,31 +88,35 @@ export default class extends Component {
     })
   }
 
+  returnPlayerValue = value => ( // Get current input value
+    this.setState({ inputValue: value, inputError: '' })
+  )
 
-  addPlayer = () => {
+  addPlayer = () => { // AddPlayer to the list
     const { players, inputValue } = this.state
     let { playerId } = this.state
     const playerName = inputValue.replace(/\s+/g, '')
-    const playerNewId = `${playerId}-${playerName.substring(0, 3)}`
+    const playerNewId = `${playerId}-${playerName.substring(0, 3)}` // Generate ID
+
     let errorText = ''
-    for (let i = 0; i < players.length; i++) {
+    for (let i = 0; i < players.length; i++) { // Check for input error: taken name
       if (players[i].name === inputValue) {
         errorText = 'Name already taken'
         this.setState({ inputError: errorText })
         return
       }
     }
-    if (inputValue === '') {
+    if (inputValue === '') { // Check for input error: empty field
       errorText = `Name can't be empty`
       this.setState({ inputError: errorText })
       return
     }
-    if (inputValue.length < 3) {
+    if (inputValue.length < 3) { // Check for input error: min chars
       errorText = 'At least 3 characters'
       this.setState({ inputError: errorText })
       return
     }
-    players.push({
+    players.push({ // Push new player
       name: playerName,
       id: playerNewId,
       crown: 0,
@@ -126,28 +133,24 @@ export default class extends Component {
     })
     this.setState({
       players,
-      playerId: playerId += 1,
+      playerId: playerId += 1, // After setting the new player, change the next id
       inputValue: '',
       inputError: errorText,
     })
   }
 
-  removePlayer = (id) => {
+  removePlayer = (id) => { // Delete player from the list
     const { players } = this.state
     this.setState({
       players: players.filter(e => e.id !== id),
     })
   }
 
-  returnPlayerValue = value => (
-    this.setState({ inputValue: value, inputError: '' })
-  )
-
-  updatePlayers = (id) => {
+  updatePlayers = (id) => { // Simple update player for MatchView
     this.updateMatchView(id)
   }
 
-  updateMatchView = (id) => {
+  updateMatchView = (id) => { // Get all info from functions and set the new state
     let newGameStats = this.saveGameStats(id)
     const { newCurrentPlayers, newWaitingPlayers } = this.updateNewMatch(id)
     const newLooser = this.updateLooser(id)
@@ -189,16 +192,16 @@ export default class extends Component {
     })
   }
 
-  updateNewMatch = (id) => {
+  updateNewMatch = (id) => { // Updates NewMatch
     const { currentPlayers, waitingPlayers } = this.state
     const winnerIndex = getPlayerIndex(currentPlayers, id)
     const newCurrentPlayers = [...currentPlayers]
-    if (winnerIndex === 1) {
+    if (winnerIndex === 1) { // If winner is on P2, push before
       newCurrentPlayers.unshift({
         ...waitingPlayers[0],
       })
     } else {
-      newCurrentPlayers.push({
+      newCurrentPlayers.push({ // If winner is on P1, push after
         ...waitingPlayers[0],
       })
     }
@@ -209,14 +212,14 @@ export default class extends Component {
     })
   }
 
-  saveGameStats = (id) => {
+  saveGameStats = (id) => { // Save the GameStats
     const { currentPlayers, gameStats } = this.state
     const winnerIndex = getPlayerIndex(currentPlayers, id)
-    const newGameStats = {
+    const newGameStats = { // Save matches quantity
       ...gameStats,
       totalMatches: gameStats.totalMatches + 1,
     }
-    if (winnerIndex === 0) {
+    if (winnerIndex === 0) { // Save winner position
       newGameStats.winnerPosition = {
         ...newGameStats.winnerPosition,
         playerOne: newGameStats.winnerPosition.playerOne + 1,
@@ -245,7 +248,7 @@ export default class extends Component {
     const date = new Date()
     const time = Math.abs(date.getTime() - currentMatchTime.getTime()) / 1000;
 
-    const newMatchItem = {
+    const newMatchItem = { // Save new match for history purposes
       matchTime: time,
       players: [
         {
@@ -261,20 +264,20 @@ export default class extends Component {
       ],
     }
 
-    newMatchItem.players[currentWinnerIndex] = {
+    newMatchItem.players[currentWinnerIndex] = { // Add win to winner
       ...newMatchItem.players[currentWinnerIndex],
       wins: 1,
     }
 
     if (winner.gate) {
-      newMatchItem.players[currentWinnerIndex] = { // gate match
+      newMatchItem.players[currentWinnerIndex] = { // Add gate if winner was gate
         ...newMatchItem.players[currentWinnerIndex],
         gate: true,
       }
     }
 
     if (looser.gate) {
-      newMatchItem.players[currentWinnerIndex] = { // crown match
+      newMatchItem.players[currentWinnerIndex] = { // Add crown if looser was gate
         ...newMatchItem.players[currentWinnerIndex],
         crown: true,
       }
@@ -282,9 +285,11 @@ export default class extends Component {
 
     matchesHistory.push(newMatchItem)
 
+    // Matches is an array of all the matches player
+    // Instead of making a new match per match, if match exist it updates to the existing one
     const match = matches.find(e => e.matchId === `${winner.id}-${looser.id}` || e.matchId === `${looser.id}-${winner.id}`)
 
-    if (!match) {
+    if (!match) { // If it's a new match, add a new element
       const newMatch = {
         matchId: `${winner.id}-${looser.id}`,
         players: [
@@ -309,6 +314,7 @@ export default class extends Component {
       })
     }
 
+    // If match exist, find the match index and the player index to update
     const matchIndex = getMatchIndex(matches, `${winner.id}-${looser.id}`, `${looser.id}-${winner.id}`)
     const winnerIndex = getPlayerIndex(matches[matchIndex].players, winner.id)
     matches[matchIndex].players[winnerIndex] = {
@@ -324,7 +330,7 @@ export default class extends Component {
     })
   }
 
-  updateLooser = (id) => {
+  updateLooser = (id) => { // Updating the looser
     const { currentPlayers } = this.state
     let looser = currentPlayers.find(e => e.id !== id)
     looser = {
@@ -340,7 +346,7 @@ export default class extends Component {
     return looser
   }
 
-  updateWinner = (id) => {
+  updateWinner = (id) => { // Updating the winner
     const {
       players,
       currentPlayers,
@@ -348,7 +354,7 @@ export default class extends Component {
       crownSrc,
     } = this.state
     let winner = currentPlayers.find(e => e.id === id)
-    let updateGate = false
+    let updateGate = false // Set update gate to false
     winner = {
       ...winner,
       stats: {
@@ -358,26 +364,28 @@ export default class extends Component {
         totalGames: winner.stats.totalGames + 1,
       },
     }
-    if (winner.gate) {
+    if (winner.gate) { // If winner was gate, count it!
       winner.stats.timesGate += 1
     }
+    // Winner first time winning so need a new gate!
     if (winner.stats.streak === 1 && currentWinnerId != null) {
       updateGate = true
     }
+    // If winner has new streak best, update!
     if (winner.stats.streak > winner.stats.bestStreak) {
       winner.stats = {
         ...winner.stats,
         bestStreak: winner.stats.streak,
       }
     }
-    let newCrownSrc = crownSrc
+    let newCrownSrc = crownSrc // For changing the top crown when there's a new crown winner
     if (winner.stats.streak >= players.length - 1) {
       winner.crown = Math.floor(winner.stats.streak / (players.length - 1))
       if (winner.crown > winner.stats.totalCrowns) {
-        winner.stats.totalCrowns += 1
+        winner.stats.totalCrowns += 1 // Add crown
         do {
           newCrownSrc = Math.floor(Math.random() * 3) + 1
-        } while (newCrownSrc === crownSrc)
+        } while (newCrownSrc === crownSrc) // Change to new top crown!
       }
     }
     return ({
@@ -387,7 +395,7 @@ export default class extends Component {
     })
   }
 
-  startGate = () => {
+  startGate = () => { // Only used first time we need a gate keeper (ChangeToMatchView)
     const { waitingPlayers, currentGateId } = this.state
     const newGateIndex = getPlayerIndex(waitingPlayers, currentGateId)
     waitingPlayers[newGateIndex] = {
