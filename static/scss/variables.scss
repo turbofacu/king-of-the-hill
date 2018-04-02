@@ -5,15 +5,27 @@ $bronze: #cd7f32;
 $crimson: #e8524b;
 $cyan: #3afcfd;
 $green: #a8ec00;
-$darkGreen: darken($green, 15%);
 $lila: #b3b3ff;
 $lime: #ddff8a;
 $magenta: #ff99ff;
+$darkPink: #fc16b3;
 $orange: #f88d35;
+$sky: #026de8;
 $silver: #c0c0c0;
-$pink: #ffdedc;
+$pink: #ffe4e4;
 $yellow: #fefa5d;
 
 $ff: Pixel;
 
 $gutter: 12px;
+
+// MediaQuery
+
+$mobileXsMax: 374px;
+$mobileMin: 375px;
+$mobileMax: 767px;
+$tabletMin: 768px;
+$tabletMax: 1059px;
+$desktopMin: 1060px;
+$desktopMax: 1399px;
+$lgMin: 1400px;

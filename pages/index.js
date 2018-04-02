@@ -239,8 +239,8 @@ export default class extends Component {
       currentMatchTime,
     } = this.state
 
-    const winner = currentPlayers.filter(e => e.id === id)
-    const looser = currentPlayers.filter(e => e.id !== id)
+    const winner = currentPlayers.find(e => e.id === id)
+    const looser = currentPlayers.find(e => e.id !== id)
     const currentWinnerIndex = getPlayerIndex(currentPlayers, id)
     const date = new Date()
     const time = Math.abs(date.getTime() - currentMatchTime.getTime()) / 1000;
@@ -266,14 +266,14 @@ export default class extends Component {
       wins: 1,
     }
 
-    if (winner[0].gate) {
+    if (winner.gate) {
       newMatchItem.players[currentWinnerIndex] = { // gate match
         ...newMatchItem.players[currentWinnerIndex],
         gate: true,
       }
     }
 
-    if (looser[0].gate) {
+    if (looser.gate) {
       newMatchItem.players[currentWinnerIndex] = { // crown match
         ...newMatchItem.players[currentWinnerIndex],
         crown: true,
@@ -282,20 +282,20 @@ export default class extends Component {
 
     matchesHistory.push(newMatchItem)
 
-    const match = matches.filter(e => e.matchId === `${winner[0].id}-${looser[0].id}` || e.matchId === `${looser[0].id}-${winner[0].id}`)
+    const match = matches.find(e => e.matchId === `${winner.id}-${looser.id}` || e.matchId === `${looser.id}-${winner.id}`)
 
-    if (!match[0]) {
+    if (!match) {
       const newMatch = {
-        matchId: `${winner[0].id}-${looser[0].id}`,
+        matchId: `${winner.id}-${looser.id}`,
         players: [
           {
-            id: winner[0].id,
-            name: winner[0].name,
+            id: winner.id,
+            name: winner.name,
             wins: 1,
           },
           {
-            id: looser[0].id,
-            name: looser[0].name,
+            id: looser.id,
+            name: looser.name,
             wins: 0,
           },
         ],
@@ -309,8 +309,8 @@ export default class extends Component {
       })
     }
 
-    const matchIndex = getMatchIndex(matches, `${winner[0].id}-${looser[0].id}`, `${looser[0].id}-${winner[0].id}`)
-    const winnerIndex = getPlayerIndex(matches[matchIndex].players, winner[0].id)
+    const matchIndex = getMatchIndex(matches, `${winner.id}-${looser.id}`, `${looser.id}-${winner.id}`)
+    const winnerIndex = getPlayerIndex(matches[matchIndex].players, winner.id)
     matches[matchIndex].players[winnerIndex] = {
       ...matches[matchIndex].players[winnerIndex],
       wins: matches[matchIndex].players[winnerIndex].wins += 1,
@@ -326,18 +326,18 @@ export default class extends Component {
 
   updateLooser = (id) => {
     const { currentPlayers } = this.state
-    const looser = currentPlayers.filter(e => e.id !== id)
-    looser[0] = {
-      ...looser[0],
+    let looser = currentPlayers.find(e => e.id !== id)
+    looser = {
+      ...looser,
       crown: 0,
       stats: {
-        ...looser[0].stats,
-        lost: looser[0].stats.lost + 1,
+        ...looser.stats,
+        lost: looser.stats.lost + 1,
         streak: 0,
-        totalGames: looser[0].stats.totalGames + 1,
+        totalGames: looser.stats.totalGames + 1,
       },
     }
-    return looser[0]
+    return looser
   }
 
   updateWinner = (id) => {
@@ -347,41 +347,41 @@ export default class extends Component {
       currentWinnerId,
       crownSrc,
     } = this.state
-    const winner = currentPlayers.filter(e => e.id === id)
+    let winner = currentPlayers.find(e => e.id === id)
     let updateGate = false
-    winner[0] = {
-      ...winner[0],
+    winner = {
+      ...winner,
       stats: {
-        ...winner[0].stats,
-        wins: winner[0].stats.wins + 1,
-        streak: winner[0].stats.streak + 1,
-        totalGames: winner[0].stats.totalGames + 1,
+        ...winner.stats,
+        wins: winner.stats.wins + 1,
+        streak: winner.stats.streak + 1,
+        totalGames: winner.stats.totalGames + 1,
       },
     }
-    if (winner[0].gate) {
-      winner[0].stats.timesGate += 1
+    if (winner.gate) {
+      winner.stats.timesGate += 1
     }
-    if (winner[0].stats.streak === 1 && currentWinnerId != null) {
+    if (winner.stats.streak === 1 && currentWinnerId != null) {
       updateGate = true
     }
-    if (winner[0].stats.streak > winner[0].stats.bestStreak) {
-      winner[0].stats = {
-        ...winner[0].stats,
-        bestStreak: winner[0].stats.streak,
+    if (winner.stats.streak > winner.stats.bestStreak) {
+      winner.stats = {
+        ...winner.stats,
+        bestStreak: winner.stats.streak,
       }
     }
     let newCrownSrc = crownSrc
-    if (winner[0].stats.streak >= players.length - 1) {
-      winner[0].crown = Math.floor(winner[0].stats.streak / (players.length - 1))
-      if (winner[0].crown > winner[0].stats.totalCrowns) {
-        winner[0].stats.totalCrowns += 1
+    if (winner.stats.streak >= players.length - 1) {
+      winner.crown = Math.floor(winner.stats.streak / (players.length - 1))
+      if (winner.crown > winner.stats.totalCrowns) {
+        winner.stats.totalCrowns += 1
         do {
           newCrownSrc = Math.floor(Math.random() * 3) + 1
         } while (newCrownSrc === crownSrc)
       }
     }
     return ({
-      winnerChanges: winner[0],
+      winnerChanges: winner,
       updateGate,
       newCrownSrc,
     })
