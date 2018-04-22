@@ -13,6 +13,8 @@ export default class MatchView extends PureComponent {
     waitingPlayers: PropTypes.arrayOf(PropTypes.object),
     updatePlayers: PropTypes.func,
     matches: PropTypes.arrayOf(PropTypes.object),
+    onRestoreState: PropTypes.func.isRequired,
+    canRestoreState: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -21,6 +23,7 @@ export default class MatchView extends PureComponent {
     currentPlayers: [],
     waitingPlayers: [],
     matches: [],
+    canRestoreState: false,
   }
 
   render() {
@@ -30,6 +33,8 @@ export default class MatchView extends PureComponent {
       currentPlayers,
       waitingPlayers,
       matches,
+      onRestoreState,
+      canRestoreState,
     } = this.props
     return (
       <div className="standard-flex">
@@ -40,9 +45,9 @@ export default class MatchView extends PureComponent {
             updatePlayers={updatePlayers}
             matches={matches}
           />
-          {/* {matches[0] &&
-            <RewindButton />
-          } */}
+          {matches[0] && canRestoreState &&
+            <RewindButton onClick={onRestoreState} />
+          }
           <h2 className="standard-semititle air-2">Waiting Players</h2>
           <PlayersList players={waitingPlayers} />
         </div>
