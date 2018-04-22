@@ -36,6 +36,7 @@ export default class extends Component {
     },
     currentMatchTime: '',
     crownSrc: 0,
+    stateHistory: null,
   }
 
   componentDidMount() {
@@ -180,6 +181,17 @@ export default class extends Component {
 
     newWaitingPlayers.push(newLooser)
 
+    this.storeState({
+      currentWinnerId: this.state.currentWinnerId,
+      currentPlayers: this.state.currentPlayers,
+      waitingPlayers: this.state.waitingPlayers,
+      matches: this.state.matches,
+      matchesHistory: this.state.matchesHistory,
+      gameStats: this.state.gameStats,
+      crownSrc: this.state.crownSrc,
+      currentMatchTime: this.state.currentMatchTime,
+    })
+
     this.setState({
       currentWinnerId: winnerChanges.id,
       currentPlayers: newCurrentPlayers,
@@ -189,6 +201,23 @@ export default class extends Component {
       gameStats: newGameStats,
       crownSrc: newCrownSrc,
       currentMatchTime: date,
+    })
+  }
+
+  storeState = (state) => {
+    this.setState({
+      stateHistory: { ...state },
+    })
+  }
+
+  restoreState = () => {
+    const { stateHistory } = this.state
+    if (!stateHistory) {
+      return
+    }
+    this.setState({
+      ...stateHistory,
+      stateHistory: null,
     })
   }
 
@@ -419,6 +448,7 @@ export default class extends Component {
       matchesHistory,
       crownSrc,
       gameStats,
+      stateHistory,
     } = this.state
 
     return (
@@ -451,6 +481,8 @@ export default class extends Component {
                 updatePlayers={this.updatePlayers}
                 changeView={this.changeToStatsView}
                 matches={matches}
+                onRestoreState={this.restoreState}
+                canRestoreState={(stateHistory !== null)}
               />
             }
             {showStatsView &&
